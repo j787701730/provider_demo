@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final _counter = Provider.of<CounterModel>(context);
     final textSize = Provider.of<int>(context).toDouble();
-
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -188,97 +188,117 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              FlatButton(
-                  padding: EdgeInsets.only(top: 6),
-                  child: Column(
-                    children: <Widget>[
-                      Icon(
-                        Icons.home,
-                        color: _tabIndex == 0 ? Colors.yellow : Color(0xffdddddd),
-                      ),
-                      Text(
-                        '精选',
-                        style: TextStyle(
-                            color: _tabIndex == 0
-                                ? Colors.yellow
-                                : Color(0xffdddddd)),
-                      )
-                    ],
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _tabIndex = 0;
-                    });
-                  }),
-              FlatButton(
-                  padding: EdgeInsets.only(top: 6),
-                  child: Column(
-                    children: <Widget>[
-                      Icon(
-                        Icons.store_mall_directory,
-                        color: _tabIndex == 1 ? Colors.yellow : Color(0xffdddddd),
-                      ),
-                      Text(
-                        '会员店',
-                        style: TextStyle(
-                            color: _tabIndex == 1
-                                ? Colors.yellow
-                                : Color(0xffdddddd)),
-                      )
-                    ],
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _tabIndex = 1;
-                    });
-                  }),
               Container(
-                width: 100,
+                width: width / 5,
+                child: FlatButton(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.home,
+                          color: _tabIndex == 0
+                              ? Colors.yellow
+                              : Color(0xffdddddd),
+                        ),
+                        Text(
+                          '精选',
+                          style: TextStyle(
+                              color: _tabIndex == 0
+                                  ? Colors.yellow
+                                  : Color(0xffdddddd)),
+                        )
+                      ],
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _tabIndex = 0;
+                      });
+                    }),
               ),
-              FlatButton(
-                  padding: EdgeInsets.only(top: 6),
-                  child: Column(
-                    children: <Widget>[
-                      Icon(
-                        Icons.add_shopping_cart,
-                        color: _tabIndex == 2 ? Colors.yellow : Color(0xffdddddd),
-                      ),
-                      Text(
-                        '购物车',
-                        style: TextStyle(
-                            color: _tabIndex == 2
-                                ? Colors.yellow
-                                : Color(0xffdddddd)),
-                      )
-                    ],
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _tabIndex = 2;
-                    });
-                  }),
-              FlatButton(
-                  padding: EdgeInsets.only(top: 6),
-                  child: Column(
-                    children: <Widget>[
-                      Icon(
-                        Icons.person_outline,
-                        color: _tabIndex == 3 ? Colors.yellow : Color(0xffdddddd),
-                      ),
-                      Text(
-                        '我',
-                        style: TextStyle(
-                            color: _tabIndex == 3
-                                ? Colors.yellow
-                                : Color(0xffdddddd)),
-                      )
-                    ],
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _tabIndex = 3;
-                    });
-                  }),
+              Container(
+                width: width / 5,
+                child: FlatButton(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.store_mall_directory,
+                          color: _tabIndex == 1
+                              ? Colors.yellow
+                              : Color(0xffdddddd),
+                        ),
+                        Text(
+                          '会员店',
+                          style: TextStyle(
+                              color: _tabIndex == 1
+                                  ? Colors.yellow
+                                  : Color(0xffdddddd)),
+                        )
+                      ],
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _tabIndex = 1;
+                      });
+                    }),
+              ),
+              Container(
+                width: width / 5,
+              ),
+              Container(
+                width: width / 5,
+                child: FlatButton(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.add_shopping_cart,
+                          color: _tabIndex == 2
+                              ? Colors.yellow
+                              : Color(0xffdddddd),
+                        ),
+                        Text(
+                          '购物车',
+                          style: TextStyle(
+                              color: _tabIndex == 2
+                                  ? Colors.yellow
+                                  : Color(0xffdddddd)),
+                        )
+                      ],
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _tabIndex = 2;
+                      });
+                    }),
+              ),
+              Container(
+                width: width / 5,
+                child: FlatButton(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.person_outline,
+                          color: _tabIndex == 3
+                              ? Colors.yellow
+                              : Color(0xffdddddd),
+                        ),
+                        Text(
+                          '我',
+                          style: TextStyle(
+                              color: _tabIndex == 3
+                                  ? Colors.yellow
+                                  : Color(0xffdddddd)),
+                        )
+                      ],
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _tabIndex = 3;
+                      });
+                    }),
+              ),
             ],
           ),
         ),
