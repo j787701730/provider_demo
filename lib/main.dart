@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'page.dart';
 import 'CounterModel.dart';
+import 'dart:async';
 
 void main() {
   final counter = CounterModel();
@@ -41,6 +42,44 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _tabIndex = 0;
+  int count = 0;
+  bool _flag = false;
+
+  time2() {
+    const timeout = const Duration(seconds: 3);
+    print('currentTime=' + DateTime.now().toString());
+    setState(() {
+      _flag = false;
+    });
+    Timer(timeout, () {
+      //到时回调
+//      print('afterTimer=' + DateTime.now().toString());
+      setState(() {
+        _flag = true;
+      });
+    });
+  }
+
+//  time() {
+//    const period = const Duration(seconds: 1);
+////    print('currentTime=' + DateTime.now().toString());
+//    Timer.periodic(period, (timer) {
+//      //到时回调
+//      print('afterTimer=' + DateTime.now().toString());
+//      count++;
+//      if (count >= 5) {
+//        //取消定时器，避免无限回调
+//        timer.cancel();
+//        timer = null;
+//      }
+//    });
+//  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,39 +90,66 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '${_counter.value}',
-              style: TextStyle(fontSize: textSize),
-            ),
-            RaisedButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (context) => new Page()),
-                );
-              },
-              child: Text('go to page'),
-            ),
-            Consumer<CounterModel>(
-              builder: (context, CounterModel counter, child) => RaisedButton(
-                    onPressed: () {
-                      counter.changeColor(Colors.red);
-                    },
-                    child: Text('红色主题'),
+      body: Stack(
+        children: <Widget>[
+          Container(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'You have pushed the button this many times:',
                   ),
-              child: Icon(Icons.add),
-            )
-          ],
-        ),
+                  Text(
+                    '${_counter.value}',
+                    style: TextStyle(fontSize: textSize),
+                  ),
+                  RaisedButton(
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(builder: (context) => new Page()),
+                      );
+                    },
+                    child: Text('go to page'),
+                  ),
+                  RaisedButton(
+                    onPressed: time2,
+                    child: Text('定时器'),
+                  ),
+                  Consumer<CounterModel>(
+                    builder: (context, CounterModel counter, child) =>
+                        RaisedButton(
+                          onPressed: () {
+                            counter.changeColor(Colors.red);
+                          },
+                          child: Text('红色主题'),
+                        ),
+                    child: Icon(Icons.add),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+              left: 30,
+              top: 30,
+              child: Offstage(
+                child: Container(
+                  color: Color(0x99000000),
+                  width: 100,
+                  padding:
+                      EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+                  child: Text(
+                    '12',
+                    style: TextStyle(color: Color(0xffffffff)),
+                  ),
+                ),
+                offstage: _flag,
+              ))
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: Provider.of<CounterModel>(context).increment,
