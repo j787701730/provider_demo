@@ -139,11 +139,10 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Offstage(
                 child: Container(
                   color: Color(0x99000000),
-                  width: 100,
                   padding:
                       EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
                   child: Text(
-                    '12',
+                    '小姐姐',
                     style: TextStyle(color: Color(0xffffffff)),
                   ),
                 ),
@@ -186,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Container(
           height: 56,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               FlatButton(
@@ -195,13 +194,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: <Widget>[
                       Icon(
                         Icons.home,
-                        color: _tabIndex == 0 ? Colors.red : Color(0xffdddddd),
+                        color: _tabIndex == 0 ? Colors.yellow : Color(0xffdddddd),
                       ),
                       Text(
                         '精选',
                         style: TextStyle(
                             color: _tabIndex == 0
-                                ? Colors.red
+                                ? Colors.yellow
                                 : Color(0xffdddddd)),
                       )
                     ],
@@ -217,13 +216,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: <Widget>[
                       Icon(
                         Icons.store_mall_directory,
-                        color: _tabIndex == 1 ? Colors.red : Color(0xffdddddd),
+                        color: _tabIndex == 1 ? Colors.yellow : Color(0xffdddddd),
                       ),
                       Text(
                         '会员店',
                         style: TextStyle(
                             color: _tabIndex == 1
-                                ? Colors.red
+                                ? Colors.yellow
                                 : Color(0xffdddddd)),
                       )
                     ],
@@ -242,13 +241,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: <Widget>[
                       Icon(
                         Icons.add_shopping_cart,
-                        color: _tabIndex == 2 ? Colors.red : Color(0xffdddddd),
+                        color: _tabIndex == 2 ? Colors.yellow : Color(0xffdddddd),
                       ),
                       Text(
                         '购物车',
                         style: TextStyle(
                             color: _tabIndex == 2
-                                ? Colors.red
+                                ? Colors.yellow
                                 : Color(0xffdddddd)),
                       )
                     ],
@@ -264,13 +263,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: <Widget>[
                       Icon(
                         Icons.person_outline,
-                        color: _tabIndex == 3 ? Colors.red : Color(0xffdddddd),
+                        color: _tabIndex == 3 ? Colors.yellow : Color(0xffdddddd),
                       ),
                       Text(
                         '我',
                         style: TextStyle(
                             color: _tabIndex == 3
-                                ? Colors.red
+                                ? Colors.yellow
                                 : Color(0xffdddddd)),
                       )
                     ],
