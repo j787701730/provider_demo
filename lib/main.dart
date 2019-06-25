@@ -40,6 +40,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int _tabIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     final _counter = Provider.of<CounterModel>(context);
@@ -87,6 +89,134 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: Provider.of<CounterModel>(context).increment,
         tooltip: 'Increment',
         child: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar:
+//      BottomNavigationBar(
+//        backgroundColor: Colors.red,
+//        selectedFontSize: 14,
+//        unselectedFontSize: 14,
+//        items: <BottomNavigationBarItem>[
+//          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('精选')),
+//          BottomNavigationBarItem(
+//              icon: Icon(Icons.store_mall_directory), title: Text('会员店')),
+//          BottomNavigationBarItem(
+//              icon: Icon(Icons.shopping_cart), title: Text('购物车')),
+//          BottomNavigationBarItem(
+//              icon: Icon(Icons.perm_identity), title: Text('我')),
+//        ],
+//        type: BottomNavigationBarType.fixed,
+//        currentIndex: _tabIndex,
+//        onTap: (index) {
+//          setState(() {
+//            _tabIndex = index;
+//          });
+//        },
+//      )
+
+          BottomAppBar(
+        color: Provider.of<CounterModel>(context).color,
+        shape: CircularNotchedRectangle(),
+        child: Container(
+          height: 56,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              FlatButton(
+                  padding: EdgeInsets.only(top: 6),
+                  child: Column(
+                    children: <Widget>[
+                      Icon(
+                        Icons.home,
+                        color: _tabIndex == 0 ? Colors.red : Color(0xffdddddd),
+                      ),
+                      Text(
+                        '精选',
+                        style: TextStyle(
+                            color: _tabIndex == 0
+                                ? Colors.red
+                                : Color(0xffdddddd)),
+                      )
+                    ],
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _tabIndex = 0;
+                    });
+                  }),
+              FlatButton(
+                  padding: EdgeInsets.only(top: 6),
+                  child: Column(
+                    children: <Widget>[
+                      Icon(
+                        Icons.store_mall_directory,
+                        color: _tabIndex == 1 ? Colors.red : Color(0xffdddddd),
+                      ),
+                      Text(
+                        '会员店',
+                        style: TextStyle(
+                            color: _tabIndex == 1
+                                ? Colors.red
+                                : Color(0xffdddddd)),
+                      )
+                    ],
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _tabIndex = 1;
+                    });
+                  }),
+              Container(
+                width: 100,
+              ),
+              FlatButton(
+                  padding: EdgeInsets.only(top: 6),
+                  child: Column(
+                    children: <Widget>[
+                      Icon(
+                        Icons.add_shopping_cart,
+                        color: _tabIndex == 2 ? Colors.red : Color(0xffdddddd),
+                      ),
+                      Text(
+                        '购物车',
+                        style: TextStyle(
+                            color: _tabIndex == 2
+                                ? Colors.red
+                                : Color(0xffdddddd)),
+                      )
+                    ],
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _tabIndex = 2;
+                    });
+                  }),
+              FlatButton(
+                  padding: EdgeInsets.only(top: 6),
+                  child: Column(
+                    children: <Widget>[
+                      Icon(
+                        Icons.person_outline,
+                        color: _tabIndex == 3 ? Colors.red : Color(0xffdddddd),
+                      ),
+                      Text(
+                        '我',
+                        style: TextStyle(
+                            color: _tabIndex == 3
+                                ? Colors.red
+                                : Color(0xffdddddd)),
+                      )
+                    ],
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _tabIndex = 3;
+                    });
+                  }),
+            ],
+          ),
+        ),
       ),
     );
   }
