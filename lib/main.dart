@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'page.dart';
 import 'CounterModel.dart';
 import 'dart:async';
+import 'home.dart';
 
 void main() {
   final counter = CounterModel();
@@ -24,18 +26,16 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-          primarySwatch: Provider.of<CounterModel>(context).color,
-          platform: TargetPlatform.iOS),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+//          primarySwatch: Provider.of<CounterModel>(context).color,
+          primaryColor: Color(0xff1E82D2),
+          platform: TargetPlatform.iOS
+      ),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -81,75 +81,72 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
+  List pages = [Home(), Page(), Page(), Page()];
+
   @override
   Widget build(BuildContext context) {
     final _counter = Provider.of<CounterModel>(context);
     final textSize = Provider.of<int>(context).toDouble();
     final width = MediaQuery.of(context).size.width;
+    ScreenUtil.instance = ScreenUtil(width: 640, height: 1136)..init(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
+//      appBar: AppBar(
+//        titleSpacing: 0,
+//        elevation: 0,
+//        title: Text('home'),
+//      ),
+      body: PageView(
+        children: <Widget>[pages[_tabIndex]],
       ),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'You have pushed the button this many times:',
-                  ),
-                  Text(
-                    '${_counter.value}',
-                    style: TextStyle(fontSize: textSize),
-                  ),
-                  RaisedButton(
-                    color: Colors.blue,
-                    textColor: Colors.white,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        new MaterialPageRoute(builder: (context) => new Page()),
-                      );
-                    },
-                    child: Text('go to page'),
-                  ),
-                  RaisedButton(
-                    onPressed: time2,
-                    child: Text('定时器'),
-                  ),
-                  Consumer<CounterModel>(
-                    builder: (context, CounterModel counter, child) =>
-                        RaisedButton(
-                          onPressed: () {
-                            counter.changeColor(Colors.red);
-                          },
-                          child: Text('红色主题'),
-                        ),
-                    child: Icon(Icons.add),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-              left: 30,
-              top: 30,
-              child: Offstage(
-                child: Container(
-                  color: Color(0x99000000),
-                  padding:
-                      EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-                  child: Text(
-                    '小姐姐',
-                    style: TextStyle(color: Color(0xffffffff)),
-                  ),
-                ),
-                offstage: _flag,
-              ))
-        ],
-      ),
+//      Stack(
+//        children: <Widget>[
+//          Container(
+//            child: Center(
+//              child: Column(
+//                mainAxisAlignment: MainAxisAlignment.center,
+//                children: <Widget>[
+//                  Text(
+//                    'You have pushed the button this many times:',
+//                  ),
+//                  Text(
+//                    '${_counter.value}',
+//                    style: TextStyle(fontSize: textSize),
+//                  ),
+//                  RaisedButton(
+//                    onPressed: time2,
+//                    child: Text('定时器'),
+//                  ),
+//                  Consumer<CounterModel>(
+//                    builder: (context, CounterModel counter, child) =>
+//                        RaisedButton(
+//                          onPressed: () {
+//                            counter.changeColor(Colors.red);
+//                          },
+//                          child: Text('红色主题'),
+//                        ),
+//                    child: Icon(Icons.add),
+//                  )
+//                ],
+//              ),
+//            ),
+//          ),
+//          Positioned(
+//              left: 30,
+//              top: 30,
+//              child: Offstage(
+//                child: Container(
+//                  color: Color(0x99000000),
+//                  padding:
+//                      EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+//                  child: Text(
+//                    '小姐姐',
+//                    style: TextStyle(color: Color(0xffffffff)),
+//                  ),
+//                ),
+//                offstage: _flag,
+//              ))
+//        ],
+//      ),
       floatingActionButton: FloatingActionButton(
         onPressed: Provider.of<CounterModel>(context).increment,
         tooltip: 'Increment',
@@ -180,7 +177,8 @@ class _MyHomePageState extends State<MyHomePage> {
 //      )
 
           BottomAppBar(
-        color: Provider.of<CounterModel>(context).color,
+//        color: Provider.of<CounterModel>(context).color,
+        color: Colors.white,
         shape: CircularNotchedRectangle(),
         child: Container(
           height: 56,
@@ -190,30 +188,56 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               Container(
                 width: width / 5,
-                child: FlatButton(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.home,
-                          color: _tabIndex == 0
-                              ? Colors.yellow
-                              : Color(0xffdddddd),
-                        ),
-                        Text(
-                          '精选',
-                          style: TextStyle(
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: <Widget>[
+                    FlatButton(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.home,
                               color: _tabIndex == 0
-                                  ? Colors.yellow
-                                  : Color(0xffdddddd)),
-                        )
-                      ],
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _tabIndex = 0;
-                      });
-                    }),
+                                  ? Color(0xff29A1F7)
+                                  : Color(0xffdddddd),
+                            ),
+                            Text(
+                              '精选',
+                              style: TextStyle(
+                                  color: _tabIndex == 0
+                                      ? Color(0xff29A1F7)
+                                      : Color(0xffdddddd)),
+                            )
+                          ],
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _tabIndex = 0;
+                          });
+                        }),
+                    Positioned(
+                        right: width / 10 - 30,
+                        top: 0,
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          decoration: BoxDecoration(
+                              color: Color(0xffFF0000),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          child: Center(
+                              child: Consumer<CounterModel>(
+                            builder: (context, CounterModel counter, _) =>
+                                Center(
+                                  child: Text(
+                                    '${counter.value}',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                          )),
+                        ))
+                  ],
+                ),
               ),
               Container(
                 width: width / 5,
@@ -224,14 +248,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         Icon(
                           Icons.store_mall_directory,
                           color: _tabIndex == 1
-                              ? Colors.yellow
+                              ? Color(0xff29A1F7)
                               : Color(0xffdddddd),
                         ),
                         Text(
                           '会员店',
                           style: TextStyle(
                               color: _tabIndex == 1
-                                  ? Colors.yellow
+                                  ? Color(0xff29A1F7)
                                   : Color(0xffdddddd)),
                         )
                       ],
@@ -240,6 +264,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       setState(() {
                         _tabIndex = 1;
                       });
+//                      Navigator.push(
+//                        context,
+//                        new MaterialPageRoute(builder: (context) => new Page()),
+//                      );
                     }),
               ),
               Container(
@@ -254,14 +282,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         Icon(
                           Icons.add_shopping_cart,
                           color: _tabIndex == 2
-                              ? Colors.yellow
+                              ? Color(0xff29A1F7)
                               : Color(0xffdddddd),
                         ),
                         Text(
                           '购物车',
                           style: TextStyle(
                               color: _tabIndex == 2
-                                  ? Colors.yellow
+                                  ? Color(0xff29A1F7)
                                   : Color(0xffdddddd)),
                         )
                       ],
@@ -281,14 +309,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         Icon(
                           Icons.person_outline,
                           color: _tabIndex == 3
-                              ? Colors.yellow
+                              ? Color(0xff29A1F7)
                               : Color(0xffdddddd),
                         ),
                         Text(
                           '我',
                           style: TextStyle(
                               color: _tabIndex == 3
-                                  ? Colors.yellow
+                                  ? Color(0xff29A1F7)
                                   : Color(0xffdddddd)),
                         )
                       ],

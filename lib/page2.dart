@@ -7,7 +7,10 @@ class Page2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Second Page2'),
+        title: Text(
+          'Second Page2',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Center(
         child: Column(
@@ -26,11 +29,11 @@ class Page2 extends StatelessWidget {
             ),
             Consumer<CounterModel>(
               builder: (context, CounterModel counter, child) => RaisedButton(
-                onPressed: () {
-                  counter.changeColor(Colors.blue);
-                },
-                child: Text('蓝色'),
-              ),
+                    onPressed: () {
+                      counter.changeColor(Colors.blue);
+                    },
+                    child: Text('蓝色'),
+                  ),
               child: Icon(Icons.add),
             )
           ],
@@ -38,9 +41,9 @@ class Page2 extends StatelessWidget {
       ),
       floatingActionButton: Consumer<CounterModel>(
         builder: (context, CounterModel counter, child) => FloatingActionButton(
-          onPressed: counter.increment,
-          child: child,
-        ),
+              onPressed: counter.increment,
+              child: child,
+            ),
         child: Icon(Icons.add),
       ),
     );

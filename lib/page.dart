@@ -46,13 +46,13 @@ class Page extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: Consumer<CounterModel>(
-        builder: (context, CounterModel counter, child) => FloatingActionButton(
-              onPressed: counter.increment,
-              child: child,
-            ),
-        child: Icon(Icons.add),
-      ),
+//      floatingActionButton: Consumer<CounterModel>(
+//        builder: (context, CounterModel counter, child) => FloatingActionButton(
+//              onPressed: counter.increment,
+//              child: child,
+//            ),
+//        child: Icon(Icons.add),
+//      ),
     );
   }
 }
