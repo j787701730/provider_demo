@@ -115,7 +115,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               ),
         elevation: 0,
         //标题居中
-//        centerTitle: true,
+        // centerTitle: true,
         //展开高度200
         expandedHeight: MediaQuery.of(context).padding.top +
             56 +
