@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'weread.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -348,7 +349,17 @@ class _HomeState extends State<Home> {
                 Container(
                   height: 100,
                   child: Center(
-                    child: Text('1'),
+                    child: FlatButton(
+                        color: Colors.green,
+                        textColor: Colors.white,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => new WeRead()),
+                          );
+                        },
+                        child: Text('微信读书')),
                   ),
                 ),
                 Container(
