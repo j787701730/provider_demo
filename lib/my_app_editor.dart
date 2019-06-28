@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:reorderables/reorderables.dart';
 
 class MyAppEditor extends StatefulWidget {
   @override
@@ -18,6 +19,13 @@ class _MyAppEditorState extends State<MyAppEditor> {
     {'image': 'nav_7', 'name': '花呗'},
     {}
   ];
+
+  void _onReorder(int oldIndex, int newIndex) {
+    setState(() {
+      var row = nav.removeAt(oldIndex);
+      nav.insert(newIndex, row);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +192,18 @@ class _MyAppEditorState extends State<MyAppEditor> {
                         ),
                         Container(
                           color: Colors.white,
-                          child: Wrap(
+                          child: ReorderableWrap(
+                            onReorder: _onReorder,
+                            onNoReorder: (int index) {
+                              //this callback is optional
+                              debugPrint(
+                                  '${DateTime.now().toString().substring(5, 22)} reorder cancelled. index:$index');
+                            },
+                            onReorderStarted: (int index) {
+                              //this callback is optional
+                              debugPrint(
+                                  '${DateTime.now().toString().substring(5, 22)} reorder started: index:$index');
+                            },
                             children: nav.map<Widget>((item) {
                               if (item.isEmpty) {
                                 return Container(
