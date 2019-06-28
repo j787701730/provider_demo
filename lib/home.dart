@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'weread.dart';
+import 'my_app_editor.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -315,28 +316,42 @@ class _HomeState extends State<Home> {
                       bottom: ScreenUtil.getInstance().setHeight(5)),
                   child: Wrap(
                     children: nav.map<Widget>((item) {
-                      return Container(
-                        padding: EdgeInsets.only(
-                            top: ScreenUtil.getInstance().setHeight(15),
-                            bottom: ScreenUtil.getInstance().setHeight(15)),
-                        width: width / 4,
-                        child: Column(
-                          children: <Widget>[
-                            Image.asset(
-                              'images/${item['image']}.png',
-                              width: ScreenUtil.getInstance().setWidth(50),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(
-                                  top: ScreenUtil.getInstance().setHeight(10)),
-                              child: Text(
-                                '${item['name']}',
-                                style: TextStyle(
-                                    fontSize:
-                                        ScreenUtil.getInstance().setSp(20)),
+                      return GestureDetector(
+                        onTap: () {
+                          switch (item['name']) {
+                            case '更多':
+                              Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) => new MyAppEditor()),
+                              );
+                              break;
+                          }
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              top: ScreenUtil.getInstance().setHeight(15),
+                              bottom: ScreenUtil.getInstance().setHeight(15)),
+                          width: width / 4,
+                          child: Column(
+                            children: <Widget>[
+                              Image.asset(
+                                'images/${item['image']}.png',
+                                width: ScreenUtil.getInstance().setWidth(50),
                               ),
-                            )
-                          ],
+                              Container(
+                                padding: EdgeInsets.only(
+                                    top:
+                                        ScreenUtil.getInstance().setHeight(10)),
+                                child: Text(
+                                  '${item['name']}',
+                                  style: TextStyle(
+                                      fontSize:
+                                          ScreenUtil.getInstance().setSp(20)),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       );
                     }).toList(),
