@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'weread.dart';
 import 'my_app_editor.dart';
+import 'dart:convert';
 
 class Home extends StatefulWidget {
   @override
@@ -70,8 +71,7 @@ class _HomeState extends State<Home> {
                           left: ScreenUtil.getInstance().setWidth(20),
                           right: ScreenUtil.getInstance().setHeight(20)),
                       decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
+                          color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(4))),
                       child: TextField(
                         decoration: InputDecoration(
                             border: InputBorder.none,
@@ -88,8 +88,7 @@ class _HomeState extends State<Home> {
                     GestureDetector(
                       onTap: () {},
                       child: Container(
-                        margin: EdgeInsets.only(
-                            left: ScreenUtil.getInstance().setWidth(20)),
+                        margin: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(20)),
                         child: Center(
                           child: Image.asset(
                             'images/home1.png',
@@ -119,9 +118,8 @@ class _HomeState extends State<Home> {
         //标题居中
         // centerTitle: true,
         //展开高度200
-        expandedHeight: MediaQuery.of(context).padding.top +
-            56 +
-            ScreenUtil.getInstance().setHeight(150.0),
+        expandedHeight:
+            MediaQuery.of(context).padding.top + 56 + ScreenUtil.getInstance().setHeight(150.0),
         //不随着滑动隐藏标题
         floating: true,
         //固定在顶部
@@ -132,12 +130,10 @@ class _HomeState extends State<Home> {
 //          title: Text('我是一个FlexibleSpaceBar'),
           collapseMode: CollapseMode.parallax,
           background: Container(
-            padding:
-                EdgeInsets.only(top: MediaQuery.of(context).padding.top + 86),
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 86),
             color: Color(0xff1E82D2),
-            height: MediaQuery.of(context).padding.top +
-                56 +
-                ScreenUtil.getInstance().setHeight(150.0),
+            height:
+                MediaQuery.of(context).padding.top + 56 + ScreenUtil.getInstance().setHeight(150.0),
             child: Row(
               children: <Widget>[
                 Container(
@@ -155,8 +151,7 @@ class _HomeState extends State<Home> {
                         child: Text(
                           '扫一扫',
                           style: TextStyle(
-                              color: Colors.white,
-                              fontSize: ScreenUtil.getInstance().setSp(26)),
+                              color: Colors.white, fontSize: ScreenUtil.getInstance().setSp(26)),
                         ),
                       )
                     ],
@@ -177,8 +172,7 @@ class _HomeState extends State<Home> {
                         child: Text(
                           '付钱',
                           style: TextStyle(
-                              color: Colors.white,
-                              fontSize: ScreenUtil.getInstance().setSp(26)),
+                              color: Colors.white, fontSize: ScreenUtil.getInstance().setSp(26)),
                         ),
                       )
                     ],
@@ -199,8 +193,7 @@ class _HomeState extends State<Home> {
                         child: Text(
                           '收钱',
                           style: TextStyle(
-                              color: Colors.white,
-                              fontSize: ScreenUtil.getInstance().setSp(26)),
+                              color: Colors.white, fontSize: ScreenUtil.getInstance().setSp(26)),
                         ),
                       )
                     ],
@@ -221,8 +214,7 @@ class _HomeState extends State<Home> {
                         child: Text(
                           '卡包',
                           style: TextStyle(
-                              color: Colors.white,
-                              fontSize: ScreenUtil.getInstance().setSp(26)),
+                              color: Colors.white, fontSize: ScreenUtil.getInstance().setSp(26)),
                         ),
                       )
                     ],
@@ -296,8 +288,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 640, height: 1136)..init(context);
     width = MediaQuery.of(context).size.width;
-    top = MediaQuery.of(context).padding.top +
-        ScreenUtil.getInstance().setHeight(48.0);
+    top = MediaQuery.of(context).padding.top + ScreenUtil.getInstance().setHeight(48.0);
     return Scaffold(
       body: NestedScrollView(
           controller: _controller,
@@ -320,11 +311,18 @@ class _HomeState extends State<Home> {
                         onTap: () {
                           switch (item['name']) {
                             case '更多':
+                              List temp = jsonDecode(jsonEncode(nav));
+                              temp.removeLast();
                               Navigator.push(
                                 context,
-                                new MaterialPageRoute(
-                                    builder: (context) => new MyAppEditor()),
-                              );
+                                new MaterialPageRoute(builder: (context) => new MyAppEditor(temp)),
+                              ).then((val) {
+                                if (val != null) {
+                                  setState(() {
+                                    nav = val;
+                                  });
+                                }
+                              });
                               break;
                           }
                         },
@@ -340,14 +338,11 @@ class _HomeState extends State<Home> {
                                 width: ScreenUtil.getInstance().setWidth(50),
                               ),
                               Container(
-                                padding: EdgeInsets.only(
-                                    top:
-                                        ScreenUtil.getInstance().setHeight(10)),
+                                padding:
+                                    EdgeInsets.only(top: ScreenUtil.getInstance().setHeight(10)),
                                 child: Text(
                                   '${item['name']}',
-                                  style: TextStyle(
-                                      fontSize:
-                                          ScreenUtil.getInstance().setSp(20)),
+                                  style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(20)),
                                 ),
                               )
                             ],
@@ -370,8 +365,7 @@ class _HomeState extends State<Home> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            new MaterialPageRoute(
-                                builder: (context) => new WeRead()),
+                            new MaterialPageRoute(builder: (context) => new WeRead()),
                           );
                         },
                         child: Text('微信读书')),

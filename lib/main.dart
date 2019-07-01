@@ -9,13 +9,15 @@ import 'home.dart';
 void main() {
   final counter = CounterModel();
   final textSize = 48;
-  runApp(Provider<int>.value(
-    value: textSize,
-    child: ChangeNotifierProvider.value(
-      value: counter,
-      child: MyApp(),
+  runApp(
+    Provider<int>.value(
+      value: textSize,
+      child: ChangeNotifierProvider.value(
+        value: counter,
+        child: MyApp(),
+      ),
     ),
-  ));
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -28,8 +30,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
 //          primarySwatch: Provider.of<CounterModel>(context).color,
           primaryColor: Color(0xff1E82D2),
-          platform: TargetPlatform.iOS
-      ),
+          platform: TargetPlatform.iOS),
       home: MyHomePage(),
     );
   }
@@ -197,16 +198,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           children: <Widget>[
                             Icon(
                               Icons.home,
-                              color: _tabIndex == 0
-                                  ? Color(0xff29A1F7)
-                                  : Color(0xffdddddd),
+                              color: _tabIndex == 0 ? Color(0xff29A1F7) : Color(0xffdddddd),
                             ),
                             Text(
                               '精选',
                               style: TextStyle(
-                                  color: _tabIndex == 0
-                                      ? Color(0xff29A1F7)
-                                      : Color(0xffdddddd)),
+                                  color: _tabIndex == 0 ? Color(0xff29A1F7) : Color(0xffdddddd)),
                             )
                           ],
                         ),
@@ -223,12 +220,10 @@ class _MyHomePageState extends State<MyHomePage> {
                           height: 20,
                           decoration: BoxDecoration(
                               color: Color(0xffFF0000),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
+                              borderRadius: BorderRadius.all(Radius.circular(20))),
                           child: Center(
                               child: Consumer<CounterModel>(
-                            builder: (context, CounterModel counter, _) =>
-                                Center(
+                            builder: (context, CounterModel counter, _) => Center(
                                   child: Text(
                                     '${counter.value}',
                                     style: TextStyle(color: Colors.white),
@@ -247,16 +242,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: <Widget>[
                         Icon(
                           Icons.store_mall_directory,
-                          color: _tabIndex == 1
-                              ? Color(0xff29A1F7)
-                              : Color(0xffdddddd),
+                          color: _tabIndex == 1 ? Color(0xff29A1F7) : Color(0xffdddddd),
                         ),
                         Text(
                           '会员店',
                           style: TextStyle(
-                              color: _tabIndex == 1
-                                  ? Color(0xff29A1F7)
-                                  : Color(0xffdddddd)),
+                              color: _tabIndex == 1 ? Color(0xff29A1F7) : Color(0xffdddddd)),
                         )
                       ],
                     ),
@@ -281,16 +272,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: <Widget>[
                         Icon(
                           Icons.add_shopping_cart,
-                          color: _tabIndex == 2
-                              ? Color(0xff29A1F7)
-                              : Color(0xffdddddd),
+                          color: _tabIndex == 2 ? Color(0xff29A1F7) : Color(0xffdddddd),
                         ),
                         Text(
                           '购物车',
                           style: TextStyle(
-                              color: _tabIndex == 2
-                                  ? Color(0xff29A1F7)
-                                  : Color(0xffdddddd)),
+                              color: _tabIndex == 2 ? Color(0xff29A1F7) : Color(0xffdddddd)),
                         )
                       ],
                     ),
@@ -308,16 +295,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: <Widget>[
                         Icon(
                           Icons.person_outline,
-                          color: _tabIndex == 3
-                              ? Color(0xff29A1F7)
-                              : Color(0xffdddddd),
+                          color: _tabIndex == 3 ? Color(0xff29A1F7) : Color(0xffdddddd),
                         ),
                         Text(
                           '我',
                           style: TextStyle(
-                              color: _tabIndex == 3
-                                  ? Color(0xff29A1F7)
-                                  : Color(0xffdddddd)),
+                              color: _tabIndex == 3 ? Color(0xff29A1F7) : Color(0xffdddddd)),
                         )
                       ],
                     ),

@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:reorderables/reorderables.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart';
 
 class MyAppEditor extends StatefulWidget {
+  final nav;
+
+  MyAppEditor(this.nav);
+
   @override
   _MyAppEditorState createState() => _MyAppEditorState();
 }
 
-class _MyAppEditorState extends State<MyAppEditor> {
+class _MyAppEditorState extends State<MyAppEditor> with TickerProviderStateMixin {
   bool isEditor = false;
   List nav = [
     {'image': 'nav_1', 'name': '运动'},
@@ -17,8 +23,74 @@ class _MyAppEditorState extends State<MyAppEditor> {
     {'image': 'nav_5', 'name': '蚂蚁森林'},
     {'image': 'nav_6', 'name': '蚂蚁庄园'},
     {'image': 'nav_7', 'name': '花呗'},
-    {}
   ];
+  List tempNav = [
+    {'image': 'nav_1', 'name': '运动'},
+    {'image': 'nav_2', 'name': '余额宝'},
+    {'image': 'nav_3', 'name': '奖励金'},
+    {'image': 'nav_4', 'name': '体育服务'},
+    {'image': 'nav_5', 'name': '蚂蚁森林'},
+    {'image': 'nav_6', 'name': '蚂蚁庄园'},
+    {'image': 'nav_7', 'name': '花呗'},
+  ];
+
+  List allNav = [
+    {'image': 'nav_1', 'name': '运动'},
+    {'image': 'nav_2', 'name': '余额宝'},
+    {'image': 'nav_3', 'name': '奖励金'},
+    {'image': 'nav_4', 'name': '体育服务'},
+    {'image': 'nav_5', 'name': '蚂蚁森林'},
+    {'image': 'nav_6', 'name': '蚂蚁庄园'},
+    {'image': 'nav_7', 'name': '花呗'},
+    {'image': 'nav_8', 'name': '充值中心'},
+    {'image': 'nav_9', 'name': '小程序收藏'},
+    {'image': 'nav_10', 'name': '城市服务'},
+    {'image': 'nav_11', 'name': '交通出行'},
+    {'image': 'nav_12', 'name': '我的快递'},
+    {'image': 'nav_13', 'name': '红包'},
+    {'image': 'nav_14', 'name': '蚂蚁保险'},
+    {'image': 'nav_15', 'name': '信用卡还款'},
+    {'image': 'nav_16', 'name': '生活缴费'},
+    {'image': 'nav_17', 'name': '医疗保险'},
+    {'image': 'nav_18', 'name': '记账本'},
+    {'image': 'nav_19', 'name': '发票管家'},
+  ];
+
+  AnimationController animationController;
+  Animation animation;
+  Animation animationColor;
+  CurvedAnimation curve;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    nav = widget.nav;
+    tempNav = widget.nav;
+    animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 300),
+    );
+    curve = CurvedAnimation(parent: animationController, curve: Curves.ease);
+    animation = Tween(begin: 0.0, end: 1.0).animate(curve);
+    animationColor = ColorTween(begin: Colors.white, end: Color(0xffF7F7F7)).animate(curve);
+
+    animationController.addListener(() {
+      setState(() {});
+    });
+
+//    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
+//    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown]);
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarIconBrightness: Brightness.dark));
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.red));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    animationController.dispose();
+  }
 
   void _onReorder(int oldIndex, int newIndex) {
     setState(() {
@@ -43,7 +115,10 @@ class _MyAppEditorState extends State<MyAppEditor> {
                   children: <Widget>[
                     GestureDetector(
                       onTap: () {
+                        List temp = jsonDecode(jsonEncode(tempNav));
+                        animationController.reverse();
                         setState(() {
+                          nav = temp;
                           isEditor = !isEditor;
                         });
                       },
@@ -73,8 +148,11 @@ class _MyAppEditorState extends State<MyAppEditor> {
                     )),
                     GestureDetector(
                       onTap: () {
+                        List temp = jsonDecode(jsonEncode(nav));
+                        animationController.reverse();
                         setState(() {
                           isEditor = !isEditor;
+                          tempNav = temp;
                         });
                       },
                       child: Container(
@@ -84,7 +162,10 @@ class _MyAppEditorState extends State<MyAppEditor> {
                         ),
                         child: Text(
                           '完成',
-                          style: TextStyle(color: Color(0xff108EE9)),
+                          style: TextStyle(
+                            color: Color(0xff108EE9),
+                            fontSize: ScreenUtil.getInstance().setSp(30),
+                          ),
                         ),
                       ),
                     ),
@@ -94,7 +175,9 @@ class _MyAppEditorState extends State<MyAppEditor> {
                   children: <Widget>[
                     GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pop();
+                          List temp = jsonDecode(jsonEncode(nav));
+                          temp.add({'image': 'more', 'name': '更多'});
+                          Navigator.of(context).pop(temp);
                         },
                         child: Container(
                           padding: EdgeInsets.only(
@@ -110,8 +193,7 @@ class _MyAppEditorState extends State<MyAppEditor> {
                               Text(
                                 '首页',
                                 style: TextStyle(
-                                    fontSize:
-                                        ScreenUtil.getInstance().setSp(30),
+                                    fontSize: ScreenUtil.getInstance().setSp(30),
                                     color: Color(0xff108EE9)),
                               )
                             ],
@@ -163,6 +245,7 @@ class _MyAppEditorState extends State<MyAppEditor> {
                       bottom: ScreenUtil.getInstance().setHeight(15),
                     ),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
                           padding: EdgeInsets.only(
@@ -210,12 +293,8 @@ class _MyAppEditorState extends State<MyAppEditor> {
                                   margin: EdgeInsets.all(
                                     ScreenUtil.getInstance().setWidth(8),
                                   ),
-                                  height:
-                                      ScreenUtil.getInstance().setHeight(100),
-                                  width: (width -
-                                          ScreenUtil.getInstance()
-                                              .setWidth(64)) /
-                                      4,
+                                  height: ScreenUtil.getInstance().setHeight(100),
+                                  width: (width - ScreenUtil.getInstance().setWidth(64)) / 4,
                                   child: Image.asset(
                                     'images/border.png',
                                     fit: BoxFit.cover,
@@ -224,39 +303,27 @@ class _MyAppEditorState extends State<MyAppEditor> {
                               } else {
                                 return Container(
                                   color: Color(0xffF7F7F7),
-                                  height:
-                                      ScreenUtil.getInstance().setHeight(100),
-                                  width: (width -
-                                          ScreenUtil.getInstance()
-                                              .setWidth(64)) /
-                                      4,
+                                  height: ScreenUtil.getInstance().setHeight(100),
+                                  width: (width - ScreenUtil.getInstance().setWidth(64)) / 4,
                                   margin: EdgeInsets.all(
                                     ScreenUtil.getInstance().setWidth(8),
                                   ),
                                   child: Stack(
                                     children: <Widget>[
                                       Container(
-                                        width: (width -
-                                                    ScreenUtil.getInstance()
-                                                        .setWidth(64)) /
-                                                4 -
-                                            ScreenUtil.getInstance()
-                                                .setWidth(16),
+                                        width: (width - ScreenUtil.getInstance().setWidth(64)) / 4 -
+                                            ScreenUtil.getInstance().setWidth(16),
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: <Widget>[
                                             Image.asset(
                                               'images/${item['image']}.png',
-                                              width: ScreenUtil.getInstance()
-                                                  .setWidth(50),
+                                              width: ScreenUtil.getInstance().setWidth(50),
                                             ),
                                             Text(
                                               item['name'],
                                               style: TextStyle(
-                                                fontSize:
-                                                    ScreenUtil.getInstance()
-                                                        .setSp(20),
+                                                fontSize: ScreenUtil.getInstance().setSp(20),
                                               ),
                                             )
                                           ],
@@ -264,13 +331,19 @@ class _MyAppEditorState extends State<MyAppEditor> {
                                       ),
                                       Positioned(
                                           right: ScreenUtil.getInstance()
-                                              .setWidth(10),
+                                              .setWidth(20 - animation.value * 10),
                                           top: ScreenUtil.getInstance()
-                                              .setWidth(10),
+                                              .setWidth(20 - animation.value * 10),
                                           child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                nav.remove(item);
+                                              });
+                                            },
                                             child: Icon(
                                               Icons.remove_circle,
                                               color: Color(0xffF15A4A),
+                                              size: animation.value * 24,
                                             ),
                                           ))
                                     ],
@@ -291,7 +364,6 @@ class _MyAppEditorState extends State<MyAppEditor> {
                       top: ScreenUtil.getInstance().setHeight(15),
                       bottom: ScreenUtil.getInstance().setHeight(15),
                     ),
-                    height: 80,
                     child: Row(
                       children: <Widget>[
                         Container(
@@ -306,38 +378,42 @@ class _MyAppEditorState extends State<MyAppEditor> {
                           ),
                         ),
                         Expanded(
-                            child: Wrap(
-                          children: nav.map<Widget>((item) {
-                            return item.isEmpty
-                                ? Placeholder(
-                                    fallbackWidth: 0,
-                                    fallbackHeight: 0,
-                                    color: Colors.transparent,
-                                  )
-                                : Container(
-                                    margin: EdgeInsets.only(
-                                      left:
-                                          ScreenUtil.getInstance().setWidth(8),
-                                      right:
-                                          ScreenUtil.getInstance().setWidth(8),
-                                    ),
-                                    padding: EdgeInsets.only(
-                                      top:
-                                          ScreenUtil.getInstance().setHeight(5),
-                                      bottom:
-                                          ScreenUtil.getInstance().setHeight(5),
-                                    ),
-                                    child: Image.asset(
-                                      'images/${item['image']}.png',
-                                      width: ScreenUtil.getInstance()
-                                          .setHeight(40),
-                                    ),
-                                  );
-                          }).toList(),
-                        )),
+                            child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  minWidth: double.infinity,
+                                  //宽度尽可能大
+                                  minHeight: ScreenUtil.getInstance().setHeight(50),
+                                  //最小高度为50像素
+                                  maxHeight: ScreenUtil.getInstance().setHeight(50),
+                                ),
+                                child: Wrap(
+                                  children: nav.map<Widget>((item) {
+                                    return item.isEmpty
+                                        ? Placeholder(
+                                            fallbackWidth: 0,
+                                            fallbackHeight: 0,
+                                            color: Colors.transparent,
+                                          )
+                                        : Container(
+                                            margin: EdgeInsets.only(
+                                              left: ScreenUtil.getInstance().setWidth(8),
+                                              right: ScreenUtil.getInstance().setWidth(8),
+                                            ),
+                                            padding: EdgeInsets.only(
+                                              top: ScreenUtil.getInstance().setHeight(5),
+                                              bottom: ScreenUtil.getInstance().setHeight(5),
+                                            ),
+                                            child: Image.asset(
+                                              'images/${item['image']}.png',
+                                              width: ScreenUtil.getInstance().setHeight(40),
+                                            ),
+                                          );
+                                  }).toList(),
+                                ))),
                         Container(
                           child: GestureDetector(
                             onTap: () {
+                              animationController.forward();
                               setState(() {
                                 isEditor = !isEditor;
                               });
@@ -349,13 +425,12 @@ class _MyAppEditorState extends State<MyAppEditor> {
                                 top: ScreenUtil.getInstance().setHeight(5),
                                 bottom: ScreenUtil.getInstance().setHeight(5),
                               ),
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Color(0xff108EE9))),
+                              decoration:
+                                  BoxDecoration(border: Border.all(color: Color(0xff108EE9))),
                               child: Text(
                                 '编辑',
                                 style: TextStyle(
-                                    fontSize:
-                                        ScreenUtil.getInstance().setSp(22),
+                                    fontSize: ScreenUtil.getInstance().setSp(22),
                                     color: Color(0xff108EE9)),
                               ),
                             ),
@@ -363,7 +438,142 @@ class _MyAppEditorState extends State<MyAppEditor> {
                         )
                       ],
                     ),
+                  ),
+            Container(
+              height: ScreenUtil.getInstance().setHeight(13),
+              color: Color(0xffF6F6FA),
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                top: ScreenUtil.getInstance().setHeight(10),
+                bottom: ScreenUtil.getInstance().setHeight(10),
+              ),
+              color: Colors.white,
+              child: Column(
+                children: <Widget>[
+                  Wrap(
+                    children: allNav.map<Widget>((item) {
+                      bool flag = true;
+                      if (isEditor) {
+                        for (var o in nav) {
+                          if (o['name'] == item['name']) {
+                            flag = false;
+                            break;
+                          }
+                        }
+                      }
+                      return flag
+                          ? Container(
+//                              color: isEditor ? Color(0xffF7F7F7) : Colors.white,
+                              color: animationColor.value,
+                              height: ScreenUtil.getInstance().setHeight(100),
+                              width: (width - ScreenUtil.getInstance().setWidth(64)) / 4,
+                              margin: EdgeInsets.all(
+                                ScreenUtil.getInstance().setWidth(8),
+                              ),
+                              child: Stack(
+                                children: <Widget>[
+                                  Container(
+                                    width: (width - ScreenUtil.getInstance().setWidth(64)) / 4 -
+                                        ScreenUtil.getInstance().setWidth(16),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Image.asset(
+                                          'images/${item['image']}.png',
+                                          width: ScreenUtil.getInstance().setWidth(50),
+                                        ),
+                                        Text(
+                                          item['name'],
+                                          style: TextStyle(
+                                            fontSize: ScreenUtil.getInstance().setSp(20),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Positioned(
+                                      right: ScreenUtil.getInstance()
+                                          .setWidth(20 - animation.value * 10),
+                                      top: ScreenUtil.getInstance()
+                                          .setWidth(20 - animation.value * 10),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            nav.add(item);
+                                          });
+                                        },
+                                        child: Icon(
+                                          Icons.add_circle,
+                                          color: Color(0xff1D8FE1),
+                                          size: animation.value * 24,
+                                        ),
+                                      ))
+                                ],
+                              ),
+                            )
+                          : Placeholder(
+                              fallbackWidth: 0,
+                              fallbackHeight: 0,
+                              color: Colors.transparent,
+                            );
+                    }).toList(),
                   )
+                ],
+              ),
+            ),
+            //                : Container(
+//                    padding: EdgeInsets.only(
+//                        top: ScreenUtil.getInstance().setHeight(5),
+//                        bottom: ScreenUtil.getInstance().setHeight(5)),
+//                    child: Wrap(
+//                      children: allNav.map<Widget>((item) {
+//                        return GestureDetector(
+//                          onTap: () {
+//                            switch (item['name']) {
+//                              case '更多':
+//                                List temp = jsonDecode(jsonEncode(nav));
+//                                temp.removeLast();
+//                                Navigator.push(
+//                                  context,
+//                                  new MaterialPageRoute(
+//                                      builder: (context) => new MyAppEditor(temp)),
+//                                ).then((val) {
+//                                  if (val != null) {
+//                                    setState(() {
+//                                      nav = val;
+//                                    });
+//                                  }
+//                                });
+//                                break;
+//                            }
+//                          },
+//                          child: Container(
+//                            padding: EdgeInsets.only(
+//                                top: ScreenUtil.getInstance().setHeight(15),
+//                                bottom: ScreenUtil.getInstance().setHeight(15)),
+//                            width: width / 4,
+//                            child: Column(
+//                              children: <Widget>[
+//                                Image.asset(
+//                                  'images/${item['image']}.png',
+//                                  width: ScreenUtil.getInstance().setWidth(50),
+//                                ),
+//                                Container(
+//                                  padding:
+//                                      EdgeInsets.only(top: ScreenUtil.getInstance().setHeight(10)),
+//                                  child: Text(
+//                                    '${item['name']}',
+//                                    style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(20)),
+//                                  ),
+//                                )
+//                              ],
+//                            ),
+//                          ),
+//                        );
+//                      }).toList(),
+//                    ),
+//                  )
           ],
         ),
       ),
