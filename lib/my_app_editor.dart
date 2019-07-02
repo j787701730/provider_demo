@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:reorderables/reorderables.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'dart:math';
 
 class MyAppEditor extends StatefulWidget {
   final nav;
@@ -76,6 +77,7 @@ class _MyAppEditorState extends State<MyAppEditor> with TickerProviderStateMixin
     animationColor = ColorTween(begin: Colors.white, end: Color(0xffF7F7F7)).animate(curve);
 
     animationController.addListener(() {
+//      print(animationController.value);
       setState(() {});
     });
 
@@ -522,58 +524,6 @@ class _MyAppEditorState extends State<MyAppEditor> with TickerProviderStateMixin
                 ],
               ),
             ),
-            //                : Container(
-//                    padding: EdgeInsets.only(
-//                        top: ScreenUtil.getInstance().setHeight(5),
-//                        bottom: ScreenUtil.getInstance().setHeight(5)),
-//                    child: Wrap(
-//                      children: allNav.map<Widget>((item) {
-//                        return GestureDetector(
-//                          onTap: () {
-//                            switch (item['name']) {
-//                              case '更多':
-//                                List temp = jsonDecode(jsonEncode(nav));
-//                                temp.removeLast();
-//                                Navigator.push(
-//                                  context,
-//                                  new MaterialPageRoute(
-//                                      builder: (context) => new MyAppEditor(temp)),
-//                                ).then((val) {
-//                                  if (val != null) {
-//                                    setState(() {
-//                                      nav = val;
-//                                    });
-//                                  }
-//                                });
-//                                break;
-//                            }
-//                          },
-//                          child: Container(
-//                            padding: EdgeInsets.only(
-//                                top: ScreenUtil.getInstance().setHeight(15),
-//                                bottom: ScreenUtil.getInstance().setHeight(15)),
-//                            width: width / 4,
-//                            child: Column(
-//                              children: <Widget>[
-//                                Image.asset(
-//                                  'images/${item['image']}.png',
-//                                  width: ScreenUtil.getInstance().setWidth(50),
-//                                ),
-//                                Container(
-//                                  padding:
-//                                      EdgeInsets.only(top: ScreenUtil.getInstance().setHeight(10)),
-//                                  child: Text(
-//                                    '${item['name']}',
-//                                    style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(20)),
-//                                  ),
-//                                )
-//                              ],
-//                            ),
-//                          ),
-//                        );
-//                      }).toList(),
-//                    ),
-//                  )
           ],
         ),
       ),

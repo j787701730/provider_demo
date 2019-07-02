@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'weread.dart';
 import 'my_app_editor.dart';
 import 'dart:convert';
+import 'drifting_bottle.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -374,7 +375,12 @@ class _HomeState extends State<Home> {
                 Container(
                   height: 100,
                   child: Center(
-                    child: Text('1'),
+                    child: RaisedButton(onPressed: (){
+                      Navigator.push(
+                      context,
+                          new MaterialPageRoute(builder: (context) => new DriftingBottle()),
+                      );
+                    },child: Text('漂流瓶'),),
                   ),
                 ),
                 Container(
