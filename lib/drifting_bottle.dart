@@ -8,57 +8,82 @@ class DriftingBottle extends StatefulWidget {
 }
 
 class _DriftingBottleState extends State<DriftingBottle> with TickerProviderStateMixin {
-  AnimationController animationController;
-  Animation animation;
+  // 瓶子动画
+  AnimationController animationBottleController;
+  Animation animationBottle;
   Animation animationColor;
-  CurvedAnimation curve;
+  CurvedAnimation curveBottle;
 
   AnimationController animationController2;
   Animation animation2;
   Animation animationColor2;
   CurvedAnimation curve2;
 
+  // 热气球动画
   AnimationController animationBalloonController;
   Animation balloonAnimation;
   CurvedAnimation balloonCurve;
+
+  // 浪花动画
+  AnimationController animationSprayController;
+  Animation animationSpray;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    animationController = AnimationController(
+    animationBottleController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: 1500),
     );
-    curve = CurvedAnimation(parent: animationController, curve: Curves.ease);
-    animation = Tween(begin: 0.0, end: 1.0).animate(curve);
-    animationColor = ColorTween(begin: Colors.red, end: Colors.blue).animate(curve);
+    curveBottle = CurvedAnimation(parent: animationBottleController, curve: Curves.ease);
+    animationBottle = Tween(begin: 0.0, end: 1.0).animate(curveBottle);
 
-    animationController.addListener(() {
+    animationSprayController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    animationSpray = Tween(begin: 0.0, end: 1.0).animate(animationSprayController);
+
+//    animationColor = ColorTween(begin: Colors.red, end: Colors.blue).animate(curve);
+
+    animationBottleController.addListener(() {
 //      print(animationController.value);
       setState(() {});
     });
 
-    animationController.addStatusListener((AnimationStatus status) {
+    animationBottleController.addStatusListener((AnimationStatus status) {
 //      print(status);
+      if (status == AnimationStatus.completed && animationBottleController != null) {
+        animationBottleController.reset();
+      }
     });
 
-    animationController2 = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 1000),
-    );
-    curve2 = CurvedAnimation(parent: animationController2, curve: Curves.ease);
-    animation2 = Tween(begin: 0.0, end: 1.0).animate(curve2);
-    animationColor2 = ColorTween(begin: Colors.red, end: Colors.blue).animate(curve2);
-
-    animationController2.addListener(() {
-//      print(animationController.value);
+    animationSprayController.addListener(() {
       setState(() {});
     });
 
-    animationController2.addStatusListener((AnimationStatus status) {
+    animationSprayController.addStatusListener((AnimationStatus status) {
 //      print(status);
+      if (status == AnimationStatus.completed && animationSprayController != null) {
+        animationSprayController.reset();
+      }
     });
+
+//    animationController2 = AnimationController(
+//      vsync: this,
+//      duration: Duration(milliseconds: 1000),
+//    );
+//    curve2 = CurvedAnimation(parent: animationController2, curve: Curves.linear);
+//    animation2 = Tween(begin: 0.0, end: 1.0).animate(curve2);
+//    animationColor2 = ColorTween(begin: Colors.red, end: Colors.blue).animate(curve2);
+//
+//    animationController2.addListener(() {
+////      print(animationController.value);
+//      setState(() {});
+//    });
+
+//    animationController2.addStatusListener((AnimationStatus status) {
+////      print(status);
+//    });
 
 //    热气球动画
     animationBalloonController = AnimationController(
@@ -88,9 +113,10 @@ class _DriftingBottleState extends State<DriftingBottle> with TickerProviderStat
   @override
   void dispose() {
     // TODO: implement dispose
-    animationController.dispose();
-    animationController2.dispose();
+    animationBottleController.dispose();
+//    animationController2.dispose();
     animationBalloonController.dispose();
+    animationSprayController.dispose();
     super.dispose();
   }
 
@@ -118,22 +144,15 @@ class _DriftingBottleState extends State<DriftingBottle> with TickerProviderStat
                   color: Colors.blue,
                   textColor: Colors.white,
                   onPressed: () {
-                    switch (animationController.status) {
-                      case AnimationStatus.completed:
-                        animationController.reverse().then((xxx) {
-                          animationController2.forward();
-                        });
-
-                        break;
-                      default:
-                        animationController.forward().then((xx) {
-                          animationController2.reverse();
-                        });
-                    }
+                    animationBottleController.forward().then((xx) {
+//                          animationController2.reverse();
+                      animationSprayController.forward();
+                    });
                   },
                   child: Text('start')),
             ),
           ),
+          // 热气球
           Positioned(
             top: (100 - balloonAnimation.value * 100),
             right: balloonAnimation.value * width,
@@ -144,16 +163,82 @@ class _DriftingBottleState extends State<DriftingBottle> with TickerProviderStat
             ),
           ),
           Positioned(
-            bottom: animation.value * height/1.5,
-            right: animation.value * width/1.5,
+            top: (100 - balloonAnimation.value * 100),
+            left: balloonAnimation.value * width,
+            child: Container(
+              height: 100,
+              width: 100,
+              child: Image.asset('images/balloon.png'),
+            ),
+          ),
+          // 瓶子
+          Positioned(
+            bottom: animationBottle.value * height / 1.5,
+            right: animationBottle.value * width / 1.5,
             child: Transform.rotate(
               child: Container(
-                height: 100,
-                width: 100,
+                height: animationBottle.value <= 0.5
+                    ? 100 + animationBottle.value * 100
+                    : animationBottle.value > 0.5 && animationBottle.value < 0.99
+                        ? 150 - (animationBottle.value - 0.5) * 150
+                        : 0,
+                width: animationBottle.value <= 0.5
+                    ? 100 + animationBottle.value * 100
+                    : animationBottle.value > 0.5 && animationBottle.value < 0.99
+                        ? 150 - (animationBottle.value - 0.5) * 150
+                        : 0,
 //                color: animationColor.value,
                 child: Image.asset('images/bottle.png'),
               ),
-              angle: (animation.value * 4) * pi,
+              angle: (animationBottle.value * 4) * pi,
+            ),
+          ),
+//          浪花两朵
+          Positioned(
+            bottom: height / 1.5,
+            right: width / 1.5 - 20,
+            child: Offstage(
+              offstage: animationSprayController.value > 0 && animationSprayController.value < 0.33
+                  ? false
+                  : true,
+              child: Container(
+                height: 70,
+                width: 126,
+//                color: animationColor.value,
+                child: Image.asset('images/big_spray.png'),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: height / 1.43,
+            right: width / 1.5 - 20,
+            child: Offstage(
+              offstage:
+                  animationSprayController.value > 0.33 && animationSprayController.value < 0.66
+                      ? false
+                      : true,
+              child: Container(
+                height: 42,
+                width: 126,
+//                color: animationColor.value,
+                child: Image.asset('images/small_spray.png'),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: height / 1.51,
+            right: width / 1.5 - 20,
+            child: Offstage(
+              offstage:
+                  animationSprayController.value > 0.66 && animationSprayController.value < 0.99
+                      ? false
+                      : true,
+              child: Container(
+                height: 42,
+                width: 126,
+//                color: animationColor.value,
+                child: Image.asset('images/small_spray_02.png'),
+              ),
             ),
           ),
 //          Positioned(
