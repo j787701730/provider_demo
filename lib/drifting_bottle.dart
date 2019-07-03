@@ -88,7 +88,7 @@ class _DriftingBottleState extends State<DriftingBottle> with TickerProviderStat
 //    热气球动画
     animationBalloonController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 20),
+      duration: Duration(seconds: 30),
     );
     balloonCurve = CurvedAnimation(parent: animationBalloonController, curve: Curves.linear);
     balloonAnimation = Tween(begin: 0.0, end: 1.0).animate(balloonCurve);
@@ -106,7 +106,7 @@ class _DriftingBottleState extends State<DriftingBottle> with TickerProviderStat
         animationBalloonController.forward();
       }
     });
-//    time();
+
     animationBalloonController.forward();
   }
 
@@ -163,7 +163,7 @@ class _DriftingBottleState extends State<DriftingBottle> with TickerProviderStat
             ),
           ),
           Positioned(
-            top: (100 - balloonAnimation.value * 100),
+            top: (120 - balloonAnimation.value * 100),
             left: balloonAnimation.value * width,
             child: Container(
               height: 100,

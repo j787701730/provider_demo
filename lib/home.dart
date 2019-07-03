@@ -4,6 +4,8 @@ import 'weread.dart';
 import 'my_app_editor.dart';
 import 'dart:convert';
 import 'drifting_bottle.dart';
+import 'ant_manor.dart';
+import 'ant_manor_loading.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -358,7 +360,7 @@ class _HomeState extends State<Home> {
                   color: Color(0xffF6F6F6),
                 ),
                 Container(
-                  height: 100,
+                  height: 60,
                   child: Center(
                     child: FlatButton(
                         color: Colors.green,
@@ -373,16 +375,47 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 Container(
-                  height: 100,
+                  height: 60,
                   child: Center(
-                    child: RaisedButton(onPressed: (){
-                      Navigator.push(
-                      context,
+                    child: RaisedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
                           new MaterialPageRoute(builder: (context) => new DriftingBottle()),
-                      );
-                    },child: Text('漂流瓶'),),
+                        );
+                      },
+                      child: Text('漂流瓶'),
+                    ),
                   ),
                 ),
+                Container(
+                  height: 60,
+                  child: Center(
+                    child: RaisedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(builder: (context) => new AntManorLoading()),
+                        );
+                      },
+                      child: Text('蚂蚁庄园Loading'),
+                    ),
+                  ),
+                ),
+//                Container(
+//                  height: 60,
+//                  child: Center(
+//                    child: RaisedButton(
+//                      onPressed: () {
+//                        Navigator.push(
+//                          context,
+//                          new MaterialPageRoute(builder: (context) => new AntManor()),
+//                        );
+//                      },
+//                      child: Text('蚂蚁庄园'),
+//                    ),
+//                  ),
+//                ),
                 Container(
                   height: 1000,
                   child: Center(
