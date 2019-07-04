@@ -46,7 +46,7 @@ class _AntManorLoadingState extends State<AntManorLoading> with TickerProviderSt
     // 蛋动画
     animationEggController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 1500),
+      duration: Duration(milliseconds: 1000),
     );
     curveEgg = CurvedAnimation(parent: animationEggController, curve: Curves.linear);
     animationEgg = Tween(begin: 0.0, end: 1.0).animate(curveEgg);
@@ -93,8 +93,9 @@ class _AntManorLoadingState extends State<AntManorLoading> with TickerProviderSt
               top: height * 0.4,
               right: width / 2 - 50,
               child: Transform.rotate(
-                angle: pi / animationChick.value == 0 ? -0.12 : animationChick.value * 0.15,
+                angle: pi / animationChick.value == 0 ? -0.025 : animationChick.value * 0.25,
                 child: Image.asset('images/chick_loading.png'),
+                alignment: Alignment.topCenter,
               )),
           Positioned(
               // 蛋1加载动画

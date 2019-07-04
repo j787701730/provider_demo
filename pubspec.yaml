@@ -26,6 +26,7 @@ dependencies:
   provider: ^3.0.0+1
   flutter_screenutil: ^0.5.2
   reorderables: ^0.2.12
+#  common_utils: ^1.1.1
 
 
 dev_dependencies:

@@ -402,20 +402,20 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-//                Container(
-//                  height: 60,
-//                  child: Center(
-//                    child: RaisedButton(
-//                      onPressed: () {
-//                        Navigator.push(
-//                          context,
-//                          new MaterialPageRoute(builder: (context) => new AntManor()),
-//                        );
-//                      },
-//                      child: Text('蚂蚁庄园'),
-//                    ),
-//                  ),
-//                ),
+                Container(
+                  height: 60,
+                  child: Center(
+                    child: RaisedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(builder: (context) => new AntManor()),
+                        );
+                      },
+                      child: Text('蚂蚁庄园'),
+                    ),
+                  ),
+                ),
                 Container(
                   height: 1000,
                   child: Center(

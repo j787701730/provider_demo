@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'dart:async';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AntManor extends StatefulWidget {
   @override
@@ -8,103 +9,168 @@ class AntManor extends StatefulWidget {
 }
 
 class _AntManorState extends State<AntManor> with TickerProviderStateMixin {
-  // 瓶子动画
-  AnimationController animationChickController;
-  Animation animationChick;
-  CurvedAnimation curveChick;
-
-  AnimationController animationEggController;
-  Animation animationEgg;
-  CurvedAnimation curveEgg;
+  Timer _timer;
+  Timer _timer2;
+  int _countdownTime = 5 * 60 * 60 - 1;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    animationChickController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 1500),
-    );
-    curveChick = CurvedAnimation(parent: animationChickController, curve: Curves.linear);
-    animationChick = Tween(begin: 0.0, end: 1.0).animate(curveChick);
+    startCountdownTimer2();
+  }
 
-    animationChickController.addListener(() {
-      setState(() {});
-    });
-
-    animationChickController.addStatusListener((AnimationStatus status) {
-//      print('new ${animationChickController.status}');
-      if (status == AnimationStatus.completed && animationChickController != null) {
-        animationChickController.reverse();
-        //当动画在开始处停止再次从头开始执行动画
-      } else if (status == AnimationStatus.dismissed && animationChickController != null) {
-        animationChickController.forward();
+  void startCountdownTimer() {
+    if (_timer2 != null) {
+      _timer2.cancel();
+    }
+    const oneSec = const Duration(milliseconds: 16);
+    _timer = Timer.periodic(oneSec, (timer) {
+      if (_countdownTime < 4 * 60 * 60) {
+        setState(() {
+          _timer.cancel();
+          startCountdownTimer2();
+        });
+      } else {
+        setState(() {
+          _countdownTime = _countdownTime - 60;
+        });
       }
     });
-    animationChickController.forward();
+  }
 
-    // 蛋动画
-    animationEggController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 1500),
-    );
-    curveEgg = CurvedAnimation(parent: animationEggController, curve: Curves.linear);
-    animationEgg = Tween(begin: 0.0, end: 1.0).animate(curveEgg);
-
-    animationEggController.addListener(() {
-      setState(() {});
+  void startCountdownTimer2() {
+    const oneSec = const Duration(milliseconds: 300);
+    _timer2 = Timer.periodic(oneSec, (timer) {
+      if (_countdownTime < 1) {
+        setState(() {
+          _timer2.cancel();
+          _countdownTime = 0;
+        });
+      } else {
+        setState(() {
+          _countdownTime = _countdownTime - 1;
+        });
+      }
     });
-
-    animationEggController.addStatusListener((AnimationStatus status) {
-//      print('new ${animationChickController.status}');
-      if (status == AnimationStatus.completed && animationEggController != null) {
-        animationEggController.reset();
-        //当动画在开始处停止再次从头开始执行动画
-      } else if (status == AnimationStatus.dismissed && animationEggController != null) {}
-      animationEggController.forward();
-    });
-    animationEggController.forward();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    animationChickController.dispose();
-    animationEggController.dispose();
     super.dispose();
+    if (_timer != null) {
+      _timer.cancel();
+    }
+    if (_timer2 != null) {
+      _timer2.cancel();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height - 158 - MediaQuery.of(context).padding.top;
     double width = MediaQuery.of(context).size.width;
+    ScreenUtil.instance = ScreenUtil(width: 640, height: 1136)..init(context);
     return Scaffold(
       backgroundColor: Color(0xffB7EAFF),
       appBar: AppBar(
         title: Text('蚂蚁庄园Flutter'),
       ),
-      body: Stack(
-        fit: StackFit.expand,
+      body: ListView(
         children: <Widget>[
-          Positioned(
-              // 鸡加载动画
-              top: height * 0.4,
-              right: width / 2 - 50,
-              child: Transform.rotate(
-                angle: pi / animationChick.value == 0 ? -0.12 : animationChick.value * 0.15,
-                child: Image.asset('images/chick_loading.png'),
-              )),
-          Positioned(
-              // 蛋1加载动画
-              top: height * 0.4 + 86,
-              right: width / 2 + 40 + 40 * animationEgg.value,
-              child: Offstage(
-                offstage: false,
-                child: Transform.rotate(
-                  angle: pi / 360,
-                  child: Image.asset('images/egg_loading.png'),
+          Container(
+            height: 60,
+            child: RaisedButton(
+              color: Colors.blue,
+              textColor: Colors.white,
+              onPressed: startCountdownTimer,
+              child: Text('start'),
+            ),
+          ),
+          Container(
+            child: Text('$_countdownTime'),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                height: ScreenUtil.getInstance().setHeight(40),
+                width: ScreenUtil.getInstance().setWidth(134),
+                decoration:
+                    BoxDecoration(image: DecorationImage(image: AssetImage('images/time.png'))),
+                child: Row(
+                  children: <Widget>[
+                    Stack(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(
+                            bottom: ScreenUtil.getInstance().setHeight(6),
+                            left: ScreenUtil.getInstance().setWidth(3),
+                          ),
+                          width: ScreenUtil.getInstance().setWidth(30),
+                          height: ScreenUtil.getInstance().setWidth(30),
+                          child: Center(
+                            child: Transform.rotate(
+//                              alignment: Alignment.bottomCenter,
+                              origin: Offset(
+                                ScreenUtil.getInstance().setWidth(0),
+                                ScreenUtil.getInstance().setWidth(5),
+                              ),
+                              angle: ((60 -
+                                      _countdownTime -
+                                      (_countdownTime ~/ 3600) * 3600 -
+                                      ((_countdownTime - (_countdownTime ~/ 3600) * 3600) ~/ 60) *
+                                          60) *
+                                  6 *
+                                  pi /
+                                  180),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(2.0)),
+                                  color: Colors.white,
+                                ),
+                                width: ScreenUtil.getInstance().setWidth(2),
+                                height: ScreenUtil.getInstance().setHeight(10),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                            left: ScreenUtil.getInstance().setWidth(15),
+                            top: ScreenUtil.getInstance().setWidth(17),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                  ScreenUtil.getInstance().setWidth(6),
+                                )),
+                                color: Colors.white,
+                              ),
+                              width: ScreenUtil.getInstance().setWidth(6),
+                              height: ScreenUtil.getInstance().setHeight(6),
+                            ))
+                      ],
+                    ),
+                    Container(
+                        margin: EdgeInsets.only(
+                          left: ScreenUtil.getInstance().setWidth(10),
+                          top: ScreenUtil.getInstance().setHeight(4),
+                        ),
+                        alignment: Alignment.centerLeft,
+                        child: _countdownTime ~/ 3600 == 0
+                            ? Text(
+                                '${((_countdownTime - (_countdownTime ~/ 3600) * 3600) ~/ 60)}分'
+                                '${_countdownTime - (_countdownTime ~/ 3600) * 3600 - ((_countdownTime - (_countdownTime ~/ 3600) * 3600) ~/ 60) * 60}秒',
+                                style: TextStyle(color: Colors.white),
+                              )
+                            : Text(
+                                '${_countdownTime ~/ 3600}小时${((_countdownTime - (_countdownTime ~/ 3600) * 3600) ~/ 60)}分',
+                                style: TextStyle(color: Colors.white),
+                              )),
+                  ],
                 ),
-              )),
+              )
+            ],
+          ),
         ],
       ),
     );
