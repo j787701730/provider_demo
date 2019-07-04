@@ -39,7 +39,7 @@ class _AntManorState extends State<AntManor> with TickerProviderStateMixin {
   }
 
   void startCountdownTimer2() {
-    const oneSec = const Duration(milliseconds: 300);
+    const oneSec = const Duration(seconds: 1);
     _timer2 = Timer.periodic(oneSec, (timer) {
       if (_countdownTime < 1) {
         setState(() {
