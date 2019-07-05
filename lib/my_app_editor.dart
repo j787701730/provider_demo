@@ -514,10 +514,9 @@ class _MyAppEditorState extends State<MyAppEditor> with TickerProviderStateMixin
                                 ],
                               ),
                             )
-                          : Placeholder(
-                              fallbackWidth: 0,
-                              fallbackHeight: 0,
-                              color: Colors.transparent,
+                          : SizedBox(
+                              width: 0,
+                              height: 0,
                             );
                     }).toList(),
                   )
