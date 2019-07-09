@@ -40,6 +40,10 @@ class _ClockState extends State<Clock> {
     });
   }
 
+  List clockNum = List<int>.generate(60, (int index) {
+    return index + 1;
+  });
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height - 158 - MediaQuery.of(context).padding.top;
@@ -67,107 +71,117 @@ class _ClockState extends State<Clock> {
                 decoration: BoxDecoration(
                     color: Colors.black, borderRadius: BorderRadius.all(Radius.circular(200))),
                 child: Stack(
-                  children: <Widget>[
-                    Positioned(
-                      left: ScreenUtil.getInstance()
-                          .setWidth((100 + sin(30 * pi / 180) * 100).toDouble()),
-                      top: ScreenUtil.getInstance().setWidth(100 - cos(30 * pi / 180) * 100),
-                      child: Container(
-                        width: 2,
-                        height: 2,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Positioned(
-                      left: ScreenUtil.getInstance()
-                          .setWidth((100 - 1 + cos(30 * pi / 180) * 100).toDouble()),
-                      top: ScreenUtil.getInstance().setWidth(100 - 1 - sin(30 * pi / 180) * 100),
-                      child: Container(
-                        width: 2,
-                        height: 2,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Positioned(
-                      right: 0,
-                      top: ScreenUtil.getInstance().setWidth((100 - 7).toDouble()),
-                      child: Container(
-                        width: 14,
-                        height: 14,
-                        child: Center(
-                          child: Text(
-                            '3',
-                            style: TextStyle(color: Colors.white, fontSize: 14),
+                  children: clockNum.map<Widget>((item) {
+                    switch (item) {
+                      case 15:
+                        return Positioned(
+                          right: 0,
+                          top: ScreenUtil.getInstance().setWidth((100 - 7).toDouble()),
+                          child: Container(
+                            width: 14,
+                            height: 14,
+                            child: Center(
+                              child: Text(
+                                '3',
+                                style: TextStyle(color: Colors.white, fontSize: 12),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 0,
-                      top: ScreenUtil.getInstance().setWidth((100 - 7).toDouble()),
-                      child: Container(
-                        width: 14,
-                        height: 14,
-                        child: Center(
-                          child: Text(
-                            '9',
-                            style: TextStyle(color: Colors.white, fontSize: 14),
+                        );
+                        break;
+                      case 30:
+                        return Positioned(
+                          left: ScreenUtil.getInstance().setWidth((100 - 7).toDouble()),
+                          bottom: 0,
+                          child: Container(
+                            width: 14,
+                            height: 20,
+                            child: Center(
+                              child: Text(
+                                '6',
+                                style: TextStyle(color: Colors.white, fontSize: 12),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: ScreenUtil.getInstance().setWidth((100 - 14).toDouble()),
-                      top: 0,
-                      child: Container(
-                        width: 28,
-                        height: 14,
-                        child: Center(
-                          child: Text(
-                            '12',
-                            style: TextStyle(color: Colors.white, fontSize: 14),
+                        );
+                        break;
+                      case 45:
+                        return Positioned(
+                          left: 0,
+                          top: ScreenUtil.getInstance().setWidth((100 - 7).toDouble()),
+                          child: Container(
+                            width: 14,
+                            height: 14,
+                            child: Center(
+                              child: Text(
+                                '9',
+                                style: TextStyle(color: Colors.white, fontSize: 12),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: ScreenUtil.getInstance().setWidth((100 - 7).toDouble()),
-                      bottom: 0,
-                      child: Container(
-                        width: 14,
-                        height: 20,
-                        child: Center(
-                          child: Text(
-                            '6',
-                            style: TextStyle(color: Colors.white, fontSize: 14),
+                        );
+                        break;
+                      case 60:
+                        return Positioned(
+                          left: ScreenUtil.getInstance().setWidth((100 - 14).toDouble()),
+                          top: 0,
+                          child: Container(
+                            width: 28,
+                            height: 14,
+                            child: Center(
+                              child: Text(
+                                '12',
+                                style: TextStyle(color: Colors.white, fontSize: 12),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: ScreenUtil.getInstance()
-                          .setWidth((cos(30 * pi / 180) * 100 + 100 - 1).toDouble()),
-                      top: ScreenUtil.getInstance().setWidth(149),
-                      child: Container(
-                        width: 2,
-                        height: 2,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Positioned(
-                      left: ScreenUtil.getInstance().setWidth(149),
-                      top: ScreenUtil.getInstance()
-                          .setWidth((cos(30 * pi / 180) * 100 + 100 - 1).toDouble()),
-                      child: Container(
-                        width: 2,
-                        height: 2,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
+                        );
+                        break;
+                      default:
+                        return Positioned(
+                          left: ScreenUtil.getInstance()
+                              .setWidth((100 + sin(item * 6 * pi / 180) * 100).toDouble()),
+                          top: item > 15 && item < 45
+                              ? ScreenUtil.getInstance()
+                                      .setWidth(100 - cos(item * 6 * pi / 180) * 100) -
+                                  (item % 5 == 0
+                                      ? ScreenUtil.getInstance().setWidth(8)
+                                      : ScreenUtil.getInstance().setWidth(4))
+                              : ScreenUtil.getInstance()
+                                  .setWidth(100 - cos(item * 6 * pi / 180) * 100),
+                          child: Transform.rotate(
+//                            origin: Offset(
+//                              item > 15 && item < 45
+//                                  ? -ScreenUtil.getInstance().setWidth(0.5)
+//                                  : ScreenUtil.getInstance().setWidth(0.5),
+//                              ScreenUtil.getInstance().setWidth(0),
+//                            ),
+                            angle: item * 6 * pi / 180,
+                            child: Container(
+                              width: ScreenUtil.getInstance().setWidth(1),
+                              height: item % 5 == 0
+                                  ? ScreenUtil.getInstance().setWidth(8)
+                                  : ScreenUtil.getInstance().setWidth(4),
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                    }
+                  }).toList(),
                 ),
               ),
             ),
+            Positioned(
+              left: ScreenUtil.getInstance().setWidth(178),
+              top: ScreenUtil.getInstance().setWidth(224),
+              child: Container(
+                child: Text(
+                  'Rolex',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+            // 时针
             Positioned(
               top: ScreenUtil.getInstance().setWidth(240),
               left: ScreenUtil.getInstance().setWidth(200),
@@ -188,6 +202,7 @@ class _ClockState extends State<Clock> {
                 ),
               ),
             ),
+            // 分针
             Positioned(
               top: ScreenUtil.getInstance().setWidth(220),
               left: ScreenUtil.getInstance().setWidth(200),
@@ -208,11 +223,11 @@ class _ClockState extends State<Clock> {
                 ),
               ),
             ),
+            // 秒针
             Positioned(
               top: ScreenUtil.getInstance().setWidth(200),
               left: ScreenUtil.getInstance().setWidth(200),
               child: Transform.rotate(
-//                              alignment: Alignment.bottomCenter,
                 origin: Offset(
                   ScreenUtil.getInstance().setWidth(0),
                   ScreenUtil.getInstance().setWidth(50),
