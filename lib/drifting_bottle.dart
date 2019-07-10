@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'dart:async';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DriftingBottle extends StatefulWidget {
   @override
@@ -124,6 +124,7 @@ class _DriftingBottleState extends State<DriftingBottle> with TickerProviderStat
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height - 158 - MediaQuery.of(context).padding.top;
     double width = MediaQuery.of(context).size.width - 100;
+    ScreenUtil.instance = ScreenUtil(width: 640, height: 1136)..init(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -154,27 +155,27 @@ class _DriftingBottleState extends State<DriftingBottle> with TickerProviderStat
           ),
           // 热气球
           Positioned(
-            top: (100 - balloonAnimation.value * 100),
+            top: (100 - balloonAnimation.value * 80),
             right: balloonAnimation.value * width,
             child: Container(
-              height: 100,
-              width: 100,
+              height: ScreenUtil.getInstance().setHeight(59),
+              width: ScreenUtil.getInstance().setWidth(38),
               child: Image.asset('images/balloon.png'),
             ),
           ),
           Positioned(
-            top: (120 - balloonAnimation.value * 100),
+            top: (120 - balloonAnimation.value * 80),
             left: balloonAnimation.value * width,
             child: Container(
-              height: 100,
-              width: 100,
+              height: ScreenUtil.getInstance().setHeight(59),
+              width: ScreenUtil.getInstance().setWidth(38),
               child: Image.asset('images/balloon.png'),
             ),
           ),
           // 瓶子
           Positioned(
-            bottom: animationBottle.value * height / 1.5,
-            right: animationBottle.value * width / 1.5,
+            bottom: animationBottle.value * height / 1.62,
+            right: animationBottle.value * width / 1.7,
             child: Transform.rotate(
               child: Container(
                 height: animationBottle.value <= 0.5
@@ -202,8 +203,8 @@ class _DriftingBottleState extends State<DriftingBottle> with TickerProviderStat
                   ? false
                   : true,
               child: Container(
-                height: 70,
-                width: 126,
+                height: ScreenUtil.getInstance().setWidth(70),
+                width: ScreenUtil.getInstance().setWidth(126),
 //                color: animationColor.value,
                 child: Image.asset('images/big_spray.png'),
               ),
@@ -218,8 +219,8 @@ class _DriftingBottleState extends State<DriftingBottle> with TickerProviderStat
                       ? false
                       : true,
               child: Container(
-                height: 42,
-                width: 126,
+                height: ScreenUtil.getInstance().setWidth(42),
+                width: ScreenUtil.getInstance().setWidth(126),
 //                color: animationColor.value,
                 child: Image.asset('images/small_spray.png'),
               ),
@@ -234,8 +235,8 @@ class _DriftingBottleState extends State<DriftingBottle> with TickerProviderStat
                       ? false
                       : true,
               child: Container(
-                height: 42,
-                width: 126,
+                height: ScreenUtil.getInstance().setHeight(42),
+                width: ScreenUtil.getInstance().setWidth(126),
 //                color: animationColor.value,
                 child: Image.asset('images/small_spray_02.png'),
               ),

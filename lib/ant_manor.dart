@@ -200,18 +200,20 @@ class _AntManorState extends State<AntManor> with TickerProviderStateMixin {
                         Container(
                             margin: EdgeInsets.only(
                               left: ScreenUtil.getInstance().setWidth(10),
-                              top: ScreenUtil.getInstance().setHeight(4),
+                              top: ScreenUtil.getInstance().setHeight(8),
                             ),
                             alignment: Alignment.centerLeft,
                             child: _countdownTime ~/ 3600 == 0
                                 ? Text(
                                     '${((_countdownTime - (_countdownTime ~/ 3600) * 3600) ~/ 60)}分'
                                     '${_countdownTime - (_countdownTime ~/ 3600) * 3600 - ((_countdownTime - (_countdownTime ~/ 3600) * 3600) ~/ 60) * 60}秒',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(color: Colors.white,
+                                    fontSize: ScreenUtil.getInstance().setSp(18)),
                                   )
                                 : Text(
                                     '${_countdownTime ~/ 3600}小时${((_countdownTime - (_countdownTime ~/ 3600) * 3600) ~/ 60)}分',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(color: Colors.white,
+                                        fontSize: ScreenUtil.getInstance().setSp(18)),
                                   )),
                       ],
                     ),
@@ -262,9 +264,9 @@ class _AntManorState extends State<AntManor> with TickerProviderStateMixin {
                   child: Image.asset('images/groove.png'),
                 )),
             Positioned(
-                right: ScreenUtil.getInstance().setWidth(280),
+                right: ScreenUtil.getInstance().setWidth(278),
                 bottom:
-                    ScreenUtil.getInstance().setHeight(458 - animationChickRightHand.value * 28),
+                    ScreenUtil.getInstance().setHeight(460 - animationChickRightHand.value * 28),
                 child: Container(
                   decoration: BoxDecoration(
                       color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(26))),
@@ -277,7 +279,7 @@ class _AntManorState extends State<AntManor> with TickerProviderStateMixin {
             Positioned(
                 right: ScreenUtil.getInstance().setWidth(348),
                 bottom:
-                    ScreenUtil.getInstance().setHeight(458 - animationChickRightHand.value * 28),
+                    ScreenUtil.getInstance().setHeight(460 - animationChickRightHand.value * 28),
                 child: Container(
                   decoration: BoxDecoration(
                       color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(26))),
