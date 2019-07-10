@@ -63,11 +63,11 @@ class _ClockState extends State<Clock> {
               child: Text('${now.hour}:${now.minute}:${now.second}'),
             ),
             Positioned(
-              left: ScreenUtil.getInstance().setWidth(100),
-              top: ScreenUtil.getInstance().setWidth(200),
+              left: (100),
+              top: (200),
               child: Container(
-                width: ScreenUtil.getInstance().setWidth(200),
-                height: ScreenUtil.getInstance().setWidth(200),
+                width: (200),
+                height: (200),
                 decoration: BoxDecoration(
                     color: Colors.black, borderRadius: BorderRadius.all(Radius.circular(200))),
                 child: Stack(
@@ -76,7 +76,7 @@ class _ClockState extends State<Clock> {
                       case 15:
                         return Positioned(
                           right: 0,
-                          top: ScreenUtil.getInstance().setWidth((100 - 7).toDouble()),
+                          top: ((100 - 7).toDouble()),
                           child: Container(
                             width: 14,
                             height: 14,
@@ -91,7 +91,7 @@ class _ClockState extends State<Clock> {
                         break;
                       case 30:
                         return Positioned(
-                          left: ScreenUtil.getInstance().setWidth((100 - 7).toDouble()),
+                          left: ((100 - 7).toDouble()),
                           bottom: 0,
                           child: Container(
                             width: 14,
@@ -108,7 +108,7 @@ class _ClockState extends State<Clock> {
                       case 45:
                         return Positioned(
                           left: 0,
-                          top: ScreenUtil.getInstance().setWidth((100 - 7).toDouble()),
+                          top: ((100 - 7).toDouble()),
                           child: Container(
                             width: 14,
                             height: 14,
@@ -123,7 +123,7 @@ class _ClockState extends State<Clock> {
                         break;
                       case 60:
                         return Positioned(
-                          left: ScreenUtil.getInstance().setWidth((100 - 14).toDouble()),
+                          left: ((100 - 14).toDouble()),
                           top: 0,
                           child: Container(
                             width: 28,
@@ -139,29 +139,21 @@ class _ClockState extends State<Clock> {
                         break;
                       default:
                         return Positioned(
-                          left: ScreenUtil.getInstance()
-                              .setWidth((100 + sin(item * 6 * pi / 180) * 100).toDouble()),
+                          left: ((100 + sin(item * 6 * pi / 180) * 100).toDouble()),
                           top: item > 15 && item < 45
-                              ? ScreenUtil.getInstance()
-                                      .setWidth(100 - cos(item * 6 * pi / 180) * 100) -
-                                  (item % 5 == 0
-                                      ? ScreenUtil.getInstance().setWidth(8)
-                                      : ScreenUtil.getInstance().setWidth(4))
-                              : ScreenUtil.getInstance()
-                                  .setWidth(100 - cos(item * 6 * pi / 180) * 100),
+                              ? (100 - cos(item * 6 * pi / 180) * 100) - (item % 5 == 0 ? (8) : (4))
+                              : (100 - cos(item * 6 * pi / 180) * 100),
                           child: Transform.rotate(
 //                            origin: Offset(
 //                              item > 15 && item < 45
-//                                  ? -ScreenUtil.getInstance().setWidth(0.5)
-//                                  : ScreenUtil.getInstance().setWidth(0.5),
-//                              ScreenUtil.getInstance().setWidth(0),
+//                                  ? -(0.5)
+//                                  : (0.5),
+//                              (0),
 //                            ),
                             angle: item * 6 * pi / 180,
                             child: Container(
-                              width: ScreenUtil.getInstance().setWidth(1),
-                              height: item % 5 == 0
-                                  ? ScreenUtil.getInstance().setWidth(8)
-                                  : ScreenUtil.getInstance().setWidth(4),
+                              width: (1),
+                              height: item % 5 == 0 ? (8) : (4),
                               color: Colors.white,
                             ),
                           ),
@@ -171,78 +163,76 @@ class _ClockState extends State<Clock> {
                 ),
               ),
             ),
+//            Positioned(
+//              left: (178),
+//              top: (224),
+//              child: Container(
+//                child: Text(
+//                  'Rolex',
+//                  style: TextStyle(color: Colors.white),
+//                ),
+//              ),
+//            ),
+//            // 时针
             Positioned(
-              left: ScreenUtil.getInstance().setWidth(178),
-              top: ScreenUtil.getInstance().setWidth(224),
-              child: Container(
-                child: Text(
-                  'Rolex',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-            // 时针
-            Positioned(
-              top: ScreenUtil.getInstance().setWidth(240),
-              left: ScreenUtil.getInstance().setWidth(200),
+              top: (240),
+              left: (200),
               child: Transform.rotate(
 //                              alignment: Alignment.bottomCenter,
-                origin: Offset(
-                  ScreenUtil.getInstance().setWidth(0),
-                  ScreenUtil.getInstance().setWidth(30),
-                ),
+                alignment: Alignment.bottomCenter,
                 angle: (now.hour * 30 * pi / 180 + now.minute / 60 * 30 * pi / 180),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(2.0)),
                     color: Colors.orange,
                   ),
-                  width: ScreenUtil.getInstance().setWidth(2),
-                  height: ScreenUtil.getInstance().setHeight(60),
+                  width: (2),
+                  height: (60),
                 ),
               ),
             ),
             // 分针
             Positioned(
-              top: ScreenUtil.getInstance().setWidth(220),
-              left: ScreenUtil.getInstance().setWidth(200),
+              top: (220),
+              left: (200),
               child: Transform.rotate(
-//                              alignment: Alignment.bottomCenter,
-                origin: Offset(
-                  ScreenUtil.getInstance().setWidth(0),
-                  ScreenUtil.getInstance().setWidth(40),
-                ),
+                alignment: Alignment.bottomCenter,
                 angle: (now.minute * 6 * pi / 180 + now.second / 60 * 6 * pi / 180),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(2.0)),
                     color: Colors.green,
                   ),
-                  width: ScreenUtil.getInstance().setWidth(2),
-                  height: ScreenUtil.getInstance().setHeight(80),
+                  width: (2),
+                  height: (80),
                 ),
               ),
             ),
             // 秒针
             Positioned(
-              top: ScreenUtil.getInstance().setWidth(200),
-              left: ScreenUtil.getInstance().setWidth(200),
+              top: (200),
+              left: (200),
               child: Transform.rotate(
-                origin: Offset(
-                  ScreenUtil.getInstance().setWidth(0),
-                  ScreenUtil.getInstance().setWidth(50),
-                ),
+                alignment: Alignment.bottomCenter,
                 angle: (now.second * 6 * pi / 180),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(2.0)),
                     color: Colors.blue,
                   ),
-                  width: ScreenUtil.getInstance().setWidth(2),
-                  height: ScreenUtil.getInstance().setHeight(100),
+                  width: (2),
+                  height: (100),
                 ),
               ),
             ),
+            Positioned(
+                left: 199,
+                top: 299,
+                child: Container(
+                  width: 2,
+                  height: 2,
+                  color: Colors.red,
+                ))
           ],
         ),
       ),
