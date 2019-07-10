@@ -55,12 +55,16 @@ class _ClockState extends State<Clock> {
         actions: <Widget>[IconButton(icon: Icon(Icons.access_time), onPressed: startTimer)],
       ),
       body: Container(
-        color: Colors.grey,
+        color: Colors.white,
         child: Stack(
           fit: StackFit.expand,
           children: <Widget>[
             Container(
-              child: Text('${now.hour}:${now.minute}:${now.second}'),
+              child: Text(
+                '${now.hour}:${(now.minute).toString().padLeft(2, '0')}:'
+                '${(now.second).toString().padLeft(2, '0')}',
+                style: TextStyle(fontSize: 34),
+              ),
             ),
             Positioned(
               left: (100),

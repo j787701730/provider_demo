@@ -7,6 +7,7 @@ import 'drifting_bottle.dart';
 import 'ant_manor.dart';
 import 'ant_manor_loading.dart';
 import 'clock.dart';
+import 'book.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -416,7 +417,8 @@ class _HomeState extends State<Home> {
                       child: Text('蚂蚁庄园'),
                     ),
                   ),
-                ),Container(
+                ),
+                Container(
                   height: 60,
                   child: Center(
                     child: RaisedButton(
@@ -427,6 +429,20 @@ class _HomeState extends State<Home> {
                         );
                       },
                       child: Text('时钟'),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  child: Center(
+                    child: RaisedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(builder: (context) => new Book()),
+                        );
+                      },
+                      child: Text('文件读写'),
                     ),
                   ),
                 ),
