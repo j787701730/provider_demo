@@ -143,7 +143,7 @@ class _ClockState extends State<Clock> {
                         break;
                       default:
                         return Positioned(
-                          left: ((100 + sin(item * 6 * pi / 180) * 100).toDouble()),
+                          left: ((100 + sin(item * 6 * pi / 180) * 100)),
                           top: item > 15 && item < 45
                               ? (100 - cos(item * 6 * pi / 180) * 100) - (item % 5 == 0 ? (8) : (4))
                               : (100 - cos(item * 6 * pi / 180) * 100),
@@ -215,7 +215,7 @@ class _ClockState extends State<Clock> {
             // 秒针
             Positioned(
               top: (200),
-              left: (200),
+              left: (199),
               child: Transform.rotate(
                 alignment: Alignment.bottomCenter,
                 angle: (now.second * 6 * pi / 180),
