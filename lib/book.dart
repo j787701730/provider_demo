@@ -114,8 +114,8 @@ class _BookState extends State<Book> {
                       alignment: WrapAlignment.start,
                       children: books.map<Widget>((item) {
                         return Container(
-                          width: (width - 10) / 4,
-                          height: (width - 10) / 4 * 3 / 2,
+                          width: (width - 10) / 3,
+                          height: (width - 10) / 3 + 30,
                           padding: EdgeInsets.only(left: 5, right: 5),
                           child: Container(
                             decoration: BoxDecoration(border: Border.all(color: Colors.blue)),
@@ -137,12 +137,20 @@ class _BookState extends State<Book> {
                                 Positioned(
                                     bottom: 0,
                                     right: 0,
-                                    child: IconButton(
-                                        color: Colors.red,
-                                        icon: Icon(Icons.delete),
-                                        onPressed: () {
-                                          _deleteBook(context, item['path'], item['name']);
-                                        }))
+                                    child: InkWell(
+                                      onTap: () {
+                                        _deleteBook(context, item['path'], item['name']);
+                                      },
+                                      child: Container(
+                                        width: 30,
+                                        height: 30,
+                                        child: Icon(
+                                          Icons.delete,
+                                          size: 20,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ))
                               ],
                             ),
                           ),
