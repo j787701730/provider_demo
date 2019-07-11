@@ -100,6 +100,7 @@ class _BookState extends State<Book> {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('书架'),
       ),
       body: Container(
