@@ -18,61 +18,46 @@ class BookInfo extends StatefulWidget {
 }
 
 class _BookInfoState extends State<BookInfo> {
-  int _counter;
   String title;
   List chapters = [];
   equb.EpubChapter content;
   var coverImage;
   List books;
+  ScrollController _controller;
+  int bookIndex = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _controller = ScrollController();
     read();
   }
 
-  Future<int> read() async {
+  read() async {
     try {
-//      Directory directory = await getApplicationDocumentsDirectory();
-////      list
-//      String dir = directory.path;
-//      print(directory.listSync().length);
       File file = new File(widget.info['path']);
-      // read the variable as a string from the file.
-//      String contents = await file.readAsString();
       List<int> bytes = await file.readAsBytes();
-
-// Opens a book and reads all of its content into memory
       equb.EpubBook epubBook = await equb.EpubReader.readBook(bytes);
-
-//      epubBook.Chapters.forEach((EpubChapter chapter) {
-//        // Title of chapter
-//        String chapterTitle = chapter.Title;
-//
-//        // HTML content of current chapter
-//        String chapterHtmlContent = chapter.HtmlContent;
-//
-//        // Nested chapters
-//        List<EpubChapter> subChapters = chapter.SubChapters;
-//
-//        print(subChapters);
-//      });
       setState(() {
-        title = epubBook.Title;
+//        title = epubBook.Title;
         chapters = epubBook.Chapters;
-        coverImage = epubBook.CoverImage;
+//        coverImage = epubBook.CoverImage;
+        content = epubBook.Chapters[bookIndex];
       });
-//      return int.parse(contents);
     } on FileSystemException {
       return 0;
     }
   }
 
-  _readIndex(index) {
-    Navigator.of(context).pop();
+  _readIndex(index, {flag = false}) {
+    if (flag) {
+      Navigator.of(context).pop();
+    }
+    _controller.jumpTo(0);
     setState(() {
       content = chapters[index];
+      bookIndex = index;
     });
   }
 
@@ -83,36 +68,51 @@ class _BookInfoState extends State<BookInfo> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: Text('${widget.info['name']}'),
       ),
-      endDrawer: Drawer(
+      drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            DrawerHeader(
-                child: Container(
-              child: coverImage != null
-                  ? Container(
-                      width: 100,
-                      height: 100,
-                    )
-                  : Placeholder(
-                      fallbackWidth: 1,
-                      fallbackHeight: 1,
-                    ),
-            )),
+//            DrawerHeader(
+//                child: Container(
+//              child: coverImage != null
+//                  ? Container(
+//                      width: 100,
+//                      height: 100,
+//                    )
+//                  : Placeholder(
+//                      fallbackWidth: 1,
+//                      fallbackHeight: 1,
+//                    ),
+//            )),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: chapters.map<Widget>((item) {
                 return InkWell(
                   onTap: () {
-                    _readIndex(chapters.indexOf(item));
+                    _readIndex(chapters.indexOf(item), flag: true);
                   },
                   child: Container(
-                    child: Text('${item.Title}'),
+                    width: width,
+                    padding: EdgeInsets.only(top: 4, bottom: 4, left: 6, right: 6),
+                    child: Text(
+                      '${item.Title}',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Color(bookIndex == chapters.indexOf(item) ? 0xff4285F4 : 0xff333333),
+                      ),
+                    ),
                   ),
                 );
               }).toList(),
@@ -122,10 +122,48 @@ class _BookInfoState extends State<BookInfo> {
       ),
       body: Container(
         child: ListView(
+          controller: _controller,
           children: <Widget>[
             Html(
               data: content != null ? '${content.HtmlContent}' : '',
-              defaultTextStyle: TextStyle(fontSize: 24),
+              defaultTextStyle: TextStyle(fontSize: 20),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                bookIndex == 0
+                    ? Container(
+                        width: width / 2,
+                      )
+                    : Container(
+                        width: width / 2,
+                        child: FlatButton(
+                          onPressed: () {
+                            var idx = bookIndex;
+                            _readIndex(idx - 1);
+                          },
+                          child: Text('上一章'),
+                          color: Colors.green,
+                          textColor: Colors.white,
+                        ),
+                      ),
+                bookIndex == chapters.length
+                    ? Container(
+                        width: width / 2,
+                      )
+                    : Container(
+                        width: width / 2,
+                        child: FlatButton(
+                          onPressed: () {
+                            var idx = bookIndex;
+                            _readIndex(idx + 1);
+                          },
+                          child: Text('下一章'),
+                          color: Colors.blue,
+                          textColor: Colors.white,
+                        ),
+                      ),
+              ],
             )
           ],
         ),
