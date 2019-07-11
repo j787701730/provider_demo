@@ -122,6 +122,7 @@ class _BookInfoState extends State<BookInfo> {
       ),
       body: Container(
         child: ListView(
+          padding: EdgeInsets.only(left: 10, right: 10),
           controller: _controller,
           children: <Widget>[
             Html(
@@ -133,10 +134,10 @@ class _BookInfoState extends State<BookInfo> {
               children: <Widget>[
                 bookIndex == 0
                     ? Container(
-                        width: width / 2,
+                        width: width / 2 - 10,
                       )
                     : Container(
-                        width: width / 2,
+                        width: width / 2 - 10,
                         child: FlatButton(
                           onPressed: () {
                             var idx = bookIndex;
@@ -149,10 +150,10 @@ class _BookInfoState extends State<BookInfo> {
                       ),
                 bookIndex == chapters.length
                     ? Container(
-                        width: width / 2,
+                        width: width / 2 - 10,
                       )
                     : Container(
-                        width: width / 2,
+                        width: width / 2 - 10,
                         child: FlatButton(
                           onPressed: () {
                             var idx = bookIndex;
