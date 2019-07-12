@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        // 自己要补个文件 localizations.dart
         ChineseCupertinoLocalizations.delegate,
       ],
       supportedLocales: [

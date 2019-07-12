@@ -46,7 +46,6 @@ class _WeReadState extends State<WeRead> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _tabIndex,
         onTap: (index) {
-          print(index);
           setState(() {
             _tabIndex = index;
           });
