@@ -4,9 +4,10 @@ import 'dart:io';
 import 'package:epub/epub.dart' as equb;
 import 'package:path_provider/path_provider.dart';
 import 'book_info.dart';
-
-import 'dart:async';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'package:convert/convert.dart';
+import 'package:crypto/crypto.dart';
 
 class Book extends StatefulWidget {
   @override
@@ -46,6 +47,19 @@ class _BookState extends State<Book> {
     }
   }
 
+  // md5 加密
+  String generateMd5(String data) {
+    var content = new Utf8Encoder().convert(data);
+    var digest = md5.convert(content);
+    // 这里其实就是 digest.toString()
+    return hex.encode(digest.bytes);
+  }
+
+  _deleteBookIndexShared(path) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.remove('$path');
+  }
+
   _delBook(path) async {
     try {
       Directory directory = await getApplicationDocumentsDirectory();
@@ -53,6 +67,7 @@ class _BookState extends State<Book> {
 //        print(list.path.substring(list.path.lastIndexOf('/') + 1));
         if (path == list.path) {
           list.delete();
+          _deleteBookIndexShared(path);
         }
       });
       _getBooks();
@@ -95,6 +110,10 @@ class _BookState extends State<Book> {
     );
   }
 
+  double start = 0;
+  double end = 10;
+  double slider = 23;
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -106,6 +125,19 @@ class _BookState extends State<Book> {
       body: Container(
         child: ListView(
           children: <Widget>[
+//            RangeSlider(
+//              values: RangeValues(start, end),
+//              divisions: 10,
+//              onChanged: (val) {
+//                print(val.end);
+//                setState(() {
+//                  end = val.end;
+//                  start = val.start;
+//                });
+//              },
+//              min: 0,
+//              max: 100,
+//            ),
             books != null
                 ? Container(
                     padding: EdgeInsets.only(left: 5, right: 5, top: 10),

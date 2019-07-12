@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider_demo/localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'page.dart';
 import 'CounterModel.dart';
 import 'dart:async';
 import 'home.dart';
+import 'dart:io';
 
 void main() {
   final counter = CounterModel();
@@ -32,6 +35,16 @@ class MyApp extends StatelessWidget {
           primaryColor: Color(0xff1E82D2),
           platform: TargetPlatform.iOS),
       home: MyHomePage(),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        ChineseCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        //此处
+        const Locale('zh', 'CH'),
+        const Locale('en', 'US'),
+      ],
     );
   }
 }
@@ -224,11 +237,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Center(
                               child: Consumer<CounterModel>(
                             builder: (context, CounterModel counter, _) => Center(
-                                  child: Text(
-                                    '${counter.value}',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
+                              child: Text(
+                                '${counter.value}',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
                           )),
                         ))
                   ],
