@@ -162,8 +162,11 @@ class _BookState extends State<Book> {
                                           builder: (context) => new BookInfo(item)),
                                     );
                                   },
-                                  child: Center(
-                                    child: Text(item['name']),
+                                  child: Container(
+                                    padding: EdgeInsets.only(left: 6, right: 6),
+                                    child: Center(
+                                      child: Text(item['name']),
+                                    ),
                                   ),
                                 ),
                                 Positioned(

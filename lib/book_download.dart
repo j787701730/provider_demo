@@ -131,6 +131,10 @@ class _BookDownloadState extends State<BookDownload> {
                 });
               },
             ),
+            Text(
+              '下载链接和图书名字都有填',
+              style: TextStyle(height: 1.5, color: Colors.orange),
+            ),
             RaisedButton(
               color: Colors.green,
               textColor: Colors.white,
@@ -138,7 +142,9 @@ class _BookDownloadState extends State<BookDownload> {
               child: Text('开始下载'),
             ),
             Container(
-              child: Text('$progress%'),
+              child: Center(
+                child: Text(progress == null ? '' : '下载进度: $progress%'),
+              ),
             )
           ],
         ),
