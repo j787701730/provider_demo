@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 
-import 'package:epub/epub.dart' as equb;
+import 'package:epub/epub.dart' as epub;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:async';
@@ -10,6 +10,7 @@ import 'dart:convert';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:html/dom.dart' as dom;
+import 'package:image/image.dart' as image;
 
 class BookInfo extends StatefulWidget {
   final info;
@@ -23,9 +24,10 @@ class BookInfo extends StatefulWidget {
 class _BookInfoState extends State<BookInfo> {
   String title;
   List chapters = [];
-  equb.EpubChapter content;
+  epub.EpubChapter content;
   var coverImage;
   List books;
+  String author = '';
   ScrollController _controller;
   int bookIndex = 0;
   bool showMenu = true;
@@ -84,12 +86,13 @@ class _BookInfoState extends State<BookInfo> {
     try {
       File file = new File(widget.info['path']);
       List<int> bytes = await file.readAsBytes();
-      equb.EpubBook epubBook = await equb.EpubReader.readBook(bytes);
+      epub.EpubBook epubBook = await epub.EpubReader.readBook(bytes);
       setState(() {
-//        title = epubBook.Title;
+        title = epubBook.Title;
         chapters = epubBook.Chapters;
-//        coverImage = epubBook.CoverImage;
+        coverImage = epubBook.CoverImage;
         content = epubBook.Chapters[bookIndex];
+        author = epubBook.Author;
       });
     } on FileSystemException {
       return 0;
@@ -105,12 +108,6 @@ class _BookInfoState extends State<BookInfo> {
       content = chapters[index];
       bookIndex = index;
     });
-  }
-
-  void showDownloadProgress(received, total) {
-    if (total != -1) {
-      print((received / total * 100).toStringAsFixed(0) + "%");
-    }
   }
 
   @override
@@ -133,18 +130,43 @@ class _BookInfoState extends State<BookInfo> {
           color: Color(background),
           child: ListView(
             children: <Widget>[
-//            DrawerHeader(
-//                child: Container(
-//              child: coverImage != null
-//                  ? Container(
-//                      width: 100,
-//                      height: 100,
-//                    )
-//                  : Placeholder(
-//                      fallbackWidth: 1,
-//                      fallbackHeight: 1,
-//                    ),
-//            )),
+              DrawerHeader(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(10)),
+                    child: coverImage != null
+                        ? Container(
+                            width: ScreenUtil.getInstance().setWidth(90),
+                            child: Image.memory(
+                              image.encodePng(coverImage),
+                              fit: BoxFit.fitWidth,
+                            ),
+                          )
+                        : Container(
+                            width: ScreenUtil.getInstance().setWidth(90),
+                          ),
+                  ),
+                  Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        '$title',
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        '$author',
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    ],
+                  ))
+                ],
+              )),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: chapters.map<Widget>((item) {
@@ -329,8 +351,58 @@ class _BookInfoState extends State<BookInfo> {
                                   offstage: !(menuIndex == 1),
                                   child: Container(
                                     width: width,
-                                    height: 50,
-                                    child: Text('进度条'),
+//                                    height: 50,
+                                  padding: EdgeInsets.only(
+                                    top: ScreenUtil.getInstance().setWidth(10)
+                                  ),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Text('$bookIndex'),
+                                        Row(
+                                          children: <Widget>[
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                left: ScreenUtil.getInstance().setWidth(44),
+                                              ),
+                                              child: Icon(
+                                                Icons.chevron_left,
+                                              ),
+                                            ),
+                                            Expanded(
+                                                child: Slider(
+                                                  activeColor: Color(0xfff565A5E),
+                                                  inactiveColor: Color(0xffCFCBBB),
+                                                  value: bookIndex.toDouble(),
+                                                  min: 0,
+                                                  label: bookIndex.toString(),
+                                                  max: chapters.length.toDouble(),
+                                                  divisions: chapters.length,
+                                                  onChanged: (val) {
+                                                    setState(() {
+                                                      bookIndex = val.toInt();
+                                                    });
+                                                  },
+                                                  onChangeEnd: (val) {
+                                                    setState(() {
+                                                      bookIndex = val.toInt();
+                                                      _readIndex(val.toInt());
+                                                      _saveBookIndexShared(val.toInt());
+                                                      showMenu = !showMenu;
+                                                    });
+                                                  },
+                                                )),
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                right: ScreenUtil.getInstance().setWidth(44),
+                                              ),
+                                              child: Icon(
+                                                Icons.chevron_right,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 // 亮度+颜色

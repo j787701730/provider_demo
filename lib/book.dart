@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 
-import 'package:epub/epub.dart' as equb;
 import 'package:path_provider/path_provider.dart';
 import 'book_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,11 +14,6 @@ class Book extends StatefulWidget {
 }
 
 class _BookState extends State<Book> {
-  int _counter;
-  String title;
-  List chapters = [];
-  equb.EpubChapter content;
-  var coverImage;
   List books;
 
   @override
