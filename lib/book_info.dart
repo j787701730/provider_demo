@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
+import 'package:html/dom.dart' as dom;
 
 class BookInfo extends StatefulWidget {
   final info;
@@ -123,6 +124,7 @@ class _BookInfoState extends State<BookInfo> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     ScreenUtil.instance = ScreenUtil(width: 640, height: 1136)..init(context);
     return Scaffold(
       key: _scaffoldKey,
@@ -192,8 +194,31 @@ class _BookInfoState extends State<BookInfo> {
                           children: <Widget>[
                             Html(
                               data: '${content.HtmlContent}',
-                              defaultTextStyle:
-                                  TextStyle(fontSize: fontSize, color: Color(fontColor)),
+                              defaultTextStyle: TextStyle(
+                                  fontSize: fontSize,
+                                  color: Color(fontColor),
+                                  locale: Locale('en', 'US'),
+                                  fontFamily: 'SourceHanSerifCN',
+                                  height: 1.2),
+                              customTextAlign: (dom.Node node) {
+                                if (node is dom.Element) {
+                                  switch (node.localName) {
+                                    case "p":
+                                      return TextAlign.justify;
+                                  }
+                                }
+                                return null;
+                              },
+//                              customRender: (node, children) {
+//                                print('xxx');
+//                                if (node is dom.Element) {
+//                                  switch (node.localName) {
+//                                    case "p":
+//                                      return Column(children: children);
+//                                  }
+//                                }
+//                                return null;
+//                              },
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -238,6 +263,54 @@ class _BookInfoState extends State<BookInfo> {
                         ),
                       ),
                     ),
+                    Positioned(
+                        top: 0,
+                        left: 0,
+                        height: height,
+                        width: width,
+                        child: Offstage(
+                          offstage: showMenu,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                showMenu = !showMenu;
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(color: Color(0x33000000)),
+                            ),
+                          ),
+                        )),
+                    Positioned(
+                        left: 0,
+                        top: 0,
+                        height: ScreenUtil.getInstance().setHeight(90),
+                        width: width,
+                        child: Offstage(
+                          offstage: showMenu,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Color(background),
+                                border: Border(
+                                    bottom: BorderSide(
+                                        color: Color(0xffDDD7C4),
+                                        width: ScreenUtil.getInstance().setWidth(1)))),
+                            child: Row(
+                              children: <Widget>[
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Container(
+                                    height: ScreenUtil.getInstance().setWidth(89),
+                                    width: ScreenUtil.getInstance().setWidth(89),
+                                    child: Icon(Icons.arrow_back_ios),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        )),
                     Positioned(
                         bottom: 0,
                         left: 0,
