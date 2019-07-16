@@ -214,8 +214,9 @@ class _BookInfoState extends State<BookInfo> {
                           padding: EdgeInsets.only(left: 10, right: 10),
                           controller: _controller,
                           children: <Widget>[
+//                            Text('${content.HtmlContent}'),
                             Html(
-                              data: '${content.HtmlContent}',
+                              data: '${content.HtmlContent}'.replaceAll('%', ''),
                               defaultTextStyle: TextStyle(
                                   fontSize: fontSize,
                                   color: Color(fontColor),

@@ -157,9 +157,10 @@ class _BookState extends State<Book> {
                                     );
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.only(left: 6, right: 6),
-                                    child: Center(
-                                      child: Text(item['name']),
+                                    padding: EdgeInsets.only(left: 6, right: 6, top: 15),
+                                    child: Text(
+                                      item['name'],
+                                      textAlign: TextAlign.center,
                                     ),
                                   ),
                                 ),

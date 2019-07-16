@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
 
 import 'dart:async';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:toast/toast.dart';
 
 class BookDownload extends StatefulWidget {
   @override
@@ -30,11 +30,14 @@ class _BookDownloadState extends State<BookDownload> {
   }
 
   Future download2() async {
+    _focusNode.unfocus();
+    _focusNode2.unfocus();
     if (url == null && bookName == null) {
+      Toast.show('下载链接和图书名字不能为空', context,gravity: Toast.CENTER);
       return;
     }
-    print(url);
-    print(bookName);
+//    print(url);
+//    print(bookName);
     try {
       Response response = await Dio().get(
         url,
@@ -45,13 +48,16 @@ class _BookDownloadState extends State<BookDownload> {
           followRedirects: false,
         ),
       );
-      print(response.headers);
+//      print(response.headers);
       String dir = (await getApplicationDocumentsDirectory()).path;
       File file = new File(dir + '/$bookName.epub');
       var raf = file.openSync(mode: FileMode.write);
       // response.data is List<int> type
       raf.writeFromSync(response.data);
       await raf.close();
+      setState(() {
+        progress = '下载完成';
+      });
     } catch (e) {
       print(e);
     }
@@ -98,10 +104,13 @@ class _BookDownloadState extends State<BookDownload> {
     if (total != -1) {
 //      print((received / total * 100).toStringAsFixed(0) + "%");
       setState(() {
-        progress = (received / total * 100).toStringAsFixed(0);
+        progress = (received / total * 100).toStringAsFixed(0) + "%";
       });
     }
   }
+
+  FocusNode _focusNode = FocusNode();
+  FocusNode _focusNode2 = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -111,42 +120,50 @@ class _BookDownloadState extends State<BookDownload> {
         automaticallyImplyLeading: false,
         title: Text('图书下载'),
       ),
-      body: Container(
-        child: ListView(
-          padding: EdgeInsets.only(left: 20, right: 20),
-          children: <Widget>[
-            TextField(
-              decoration: InputDecoration(labelText: '下载链接'),
-              onChanged: (text) {
-                setState(() {
-                  url = text;
-                });
-              },
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: '图书名字'),
-              onChanged: (text) {
-                setState(() {
-                  bookName = text;
-                });
-              },
-            ),
-            Text(
-              '下载链接和图书名字都有填',
-              style: TextStyle(height: 1.5, color: Colors.orange),
-            ),
-            RaisedButton(
-              color: Colors.green,
-              textColor: Colors.white,
-              onPressed: download2,
-              child: Text('开始下载'),
-            ),
-            Container(
-              child: Center(
-                child: Text(progress == null ? '' : '下载进度: $progress%'),
+      body: GestureDetector(
+        onTap: () {
+          _focusNode.unfocus();
+          _focusNode2.unfocus();
+        },
+        child: Container(
+          child: ListView(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            children: <Widget>[
+              TextField(
+                focusNode: _focusNode,
+                decoration: InputDecoration(labelText: '下载链接'),
+                onChanged: (text) {
+                  setState(() {
+                    url = text;
+                  });
+                },
               ),
-            )
-          ],
+              TextField(
+                focusNode: _focusNode2,
+                decoration: InputDecoration(labelText: '图书名字'),
+                onChanged: (text) {
+                  setState(() {
+                    bookName = text;
+                  });
+                },
+              ),
+              Text(
+                '下载链接和图书名字都有填',
+                style: TextStyle(height: 1.5, color: Colors.orange),
+              ),
+              RaisedButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                onPressed: download2,
+                child: Text('开始下载'),
+              ),
+              Container(
+                child: Center(
+                  child: Text(progress == null ? '' : '下载进度: $progress'),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

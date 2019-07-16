@@ -13,7 +13,7 @@ class _WeReadState extends State<WeRead> {
   var width;
   var top;
   List pages = [WeReadFind(), Book(), BookDownload(), WeReadFind()];
-  int _tabIndex = 0;
+  int _tabIndex = 1;
 
   @override
   Widget build(BuildContext context) {
