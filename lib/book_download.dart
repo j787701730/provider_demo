@@ -22,6 +22,8 @@ class _BookDownloadState extends State<BookDownload> {
   String url;
   String bookName;
   String progress;
+  FocusNode _focusNode = FocusNode();
+  FocusNode _focusNode2 = FocusNode();
 
   @override
   void initState() {
@@ -29,15 +31,21 @@ class _BookDownloadState extends State<BookDownload> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _focusNode.dispose();
+    _focusNode2.dispose();
+  }
+
   Future download2() async {
     _focusNode.unfocus();
     _focusNode2.unfocus();
     if (url == null && bookName == null) {
-      Toast.show('下载链接和图书名字不能为空', context,gravity: Toast.CENTER);
+      Toast.show('下载链接和图书名字不能为空', context, gravity: Toast.CENTER);
       return;
     }
-//    print(url);
-//    print(bookName);
     try {
       Response response = await Dio().get(
         url,
@@ -108,9 +116,6 @@ class _BookDownloadState extends State<BookDownload> {
       });
     }
   }
-
-  FocusNode _focusNode = FocusNode();
-  FocusNode _focusNode2 = FocusNode();
 
   @override
   Widget build(BuildContext context) {

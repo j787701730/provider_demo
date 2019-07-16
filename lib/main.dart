@@ -7,7 +7,6 @@ import 'page.dart';
 import 'CounterModel.dart';
 import 'dart:async';
 import 'home.dart';
-import 'dart:io';
 
 void main() {
   final counter = CounterModel();
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Provider Demo',
       theme: ThemeData(
 //          primarySwatch: Provider.of<CounterModel>(context).color,
           primaryColor: Color(0xff1E82D2),
