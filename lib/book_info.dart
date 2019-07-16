@@ -29,20 +29,24 @@ class _BookInfoState extends State<BookInfo> {
   List books;
   String author = '';
   ScrollController _controller;
+  ScrollController _catalogController;
   int bookIndex = 0;
   bool showMenu = true;
   int background = 0xffFCF7E8;
   int fontColor = 0xff272623;
   double fontSize = 20;
   Timer _timer;
+  Timer _catalogTimer;
   int menuIndex;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _catalogKey = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _controller = ScrollController();
+    _catalogController = ScrollController();
     _timer = new Timer(const Duration(milliseconds: 300), () {
       _readShared();
     });
@@ -115,7 +119,11 @@ class _BookInfoState extends State<BookInfo> {
     // TODO: implement dispose
     super.dispose();
     _controller.dispose();
+    _catalogController.dispose();
     _timer.cancel();
+    if (_catalogTimer != null) {
+      _catalogTimer.cancel();
+    }
   }
 
   @override
@@ -125,10 +133,11 @@ class _BookInfoState extends State<BookInfo> {
     ScreenUtil.instance = ScreenUtil(width: 640, height: 1136)..init(context);
     return Scaffold(
       key: _scaffoldKey,
-      drawer: Drawer(
+      drawer: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: width * 0.8, minWidth: width * 0.8),
         child: Container(
           color: Color(background),
-          child: ListView(
+          child: Column(
             children: <Widget>[
               DrawerHeader(
                   child: Row(
@@ -151,7 +160,7 @@ class _BookInfoState extends State<BookInfo> {
                   ),
                   Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         '$title',
@@ -167,32 +176,37 @@ class _BookInfoState extends State<BookInfo> {
                   ))
                 ],
               )),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: chapters.map<Widget>((item) {
-                  return InkWell(
-                    onTap: () {
-                      _readIndex(chapters.indexOf(item), flag: true);
-                      _saveBookIndexShared(chapters.indexOf(item));
-                      setState(() {
-                        showMenu = true;
-                      });
-                    },
-                    child: Container(
-                      width: width,
-                      padding: EdgeInsets.only(top: 4, bottom: 4, left: 6, right: 6),
-                      child: Text(
-                        '${item.Title}',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color:
-                              Color(bookIndex == chapters.indexOf(item) ? 0xff4285F4 : 0xff333333),
+              Expanded(
+                  key: _catalogKey,
+                  flex: 1,
+                  child: ListView(
+                    controller: _catalogController,
+                    padding: EdgeInsets.only(top: 0, left: 6, right: 6, bottom: 0),
+                    children: chapters.map<Widget>((item) {
+                      return InkWell(
+                        onTap: () {
+                          _readIndex(chapters.indexOf(item), flag: true);
+                          _saveBookIndexShared(chapters.indexOf(item));
+                          setState(() {
+                            showMenu = true;
+                          });
+                        },
+                        child: Container(
+                          height: 40,
+                          child: Text(
+                            '${item.Title}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Color(
+                                  bookIndex == chapters.indexOf(item) ? 0xff4285F4 : 0xff333333),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              )
+                      );
+                    }).toList(),
+                  ))
             ],
           ),
         ),
@@ -353,9 +367,8 @@ class _BookInfoState extends State<BookInfo> {
                                   child: Container(
                                     width: width,
 //                                    height: 50,
-                                  padding: EdgeInsets.only(
-                                    top: ScreenUtil.getInstance().setWidth(10)
-                                  ),
+                                    padding:
+                                        EdgeInsets.only(top: ScreenUtil.getInstance().setWidth(10)),
                                     child: Column(
                                       children: <Widget>[
                                         Text('$bookIndex'),
@@ -370,6 +383,7 @@ class _BookInfoState extends State<BookInfo> {
                                               ),
                                             ),
                                             Expanded(
+                                                flex: 1,
                                                 child: Slider(
                                                   activeColor: Color(0xfff565A5E),
                                                   inactiveColor: Color(0xffCFCBBB),
@@ -590,6 +604,28 @@ class _BookInfoState extends State<BookInfo> {
                                           _scaffoldKey.currentState.openDrawer();
                                           setState(() {
                                             menuIndex = 0;
+                                          });
+                                          _catalogTimer =
+                                              Timer(const Duration(milliseconds: 300), () {
+                                            double conHeight =
+                                                _catalogKey.currentContext.size.height;
+                                            if ((chapters.length - bookIndex) <
+                                                conHeight ~/ 40 / 2) {
+                                              if (bookIndex > chapters.length - conHeight ~/ 40) {
+                                                _catalogController.jumpTo((bookIndex -
+                                                        conHeight ~/ 40 +
+                                                        conHeight ~/ 40 ~/ 3) *
+                                                    40.0);
+                                              } else {
+                                                _catalogController
+                                                    .jumpTo((bookIndex - conHeight ~/ 40) * 40.0);
+                                              }
+                                            } else if (conHeight ~/ 40 / 2 < bookIndex) {
+                                              if (bookIndex > conHeight ~/ 40 / 2) {
+                                                _catalogController.jumpTo(
+                                                    (bookIndex - conHeight ~/ 40 ~/ 2) * 40.0);
+                                              }
+                                            }
                                           });
                                         },
                                         child: Container(

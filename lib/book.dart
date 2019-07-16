@@ -144,7 +144,8 @@ class _BookState extends State<Book> {
                           height: (width - 10) / 3 + 30,
                           padding: EdgeInsets.only(left: 5, right: 5),
                           child: Container(
-                            decoration: BoxDecoration(border: Border.all(color: Colors.blue)),
+                            decoration: BoxDecoration(border: Border.all(color: Colors.blue),
+                            ),
                             child: Stack(
                               fit: StackFit.expand,
                               children: <Widget>[
@@ -157,7 +158,12 @@ class _BookState extends State<Book> {
                                     );
                                   },
                                   child: Container(
-                                    padding: EdgeInsets.only(left: 6, right: 6, top: 15),
+                                    padding: EdgeInsets.only(left: 6, right: 6, top: 30),
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage('images/book_bg.png'),
+                                        fit: BoxFit.fitWidth)
+                                    ),
                                     child: Text(
                                       item['name'],
                                       textAlign: TextAlign.center,
