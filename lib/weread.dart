@@ -31,16 +31,16 @@ class _WeReadState extends State<WeRead> {
         unselectedIconTheme: IconThemeData(color: Color(0xff797F88)),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-              icon: Icon(Icons.explore, size: ScreenUtil.getInstance().setWidth(40)),
+              icon: Icon(Icons.explore, size: ScreenUtil.getInstance().setWidth(46)),
               title: Text('发现')),
           BottomNavigationBarItem(
-              icon: Icon(Icons.book, size: ScreenUtil.getInstance().setWidth(40)),
+              icon: Icon(Icons.book, size: ScreenUtil.getInstance().setWidth(46)),
               title: Text('书架')),
           BottomNavigationBarItem(
-              icon: Icon(Icons.cloud_download, size: ScreenUtil.getInstance().setWidth(40)),
+              icon: Icon(Icons.cloud_download, size: ScreenUtil.getInstance().setWidth(46)),
               title: Text('下载')),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person, size: ScreenUtil.getInstance().setWidth(40)),
+              icon: Icon(Icons.person, size: ScreenUtil.getInstance().setWidth(46)),
               title: Text('我')),
         ],
         type: BottomNavigationBarType.fixed,

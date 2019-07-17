@@ -96,7 +96,7 @@ class _WeReadFindState extends State<WeReadFind> {
               ], begin: FractionalOffset(1, 0), end: FractionalOffset(1, 1))),
           child: PageView(
             physics: ScrollPhysics(),
-            controller: PageController(viewportFraction: 0.80),
+            controller: PageController(viewportFraction: 0.85),
             children: <Widget>[WeReadFindPage(0), WeReadFindPage(1), WeReadFindPage(2)],
           )),
     );

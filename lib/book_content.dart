@@ -16,16 +16,16 @@ class BookContent extends StatefulWidget {
 class _BookContentState extends State<BookContent> {
   String content;
 
-//  Color fontColor;
-//  double fontSize;
+  int fontColor;
+  double fontSize;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     content = widget.content;
-//    fontColor = widget.fontColor;
-//    fontSize = widget.fontSize;
+    fontColor = widget.fontColor;
+    fontSize = widget.fontSize;
   }
 
   @override
@@ -40,33 +40,36 @@ class _BookContentState extends State<BookContent> {
   @override
   Widget build(BuildContext context) {
     print('xxx');
-    return Html(
-      data: '$content'.replaceAll('%', ''),
-      defaultTextStyle: TextStyle(
-//          fontSize: fontSize,
-//          color: fontColor,
-          locale: Locale('en', 'US'),
-          fontFamily: 'SourceHanSerifCN',
-          height: 1.2),
-      customTextAlign: (dom.Node node) {
-        if (node is dom.Element) {
-          switch (node.localName) {
-            case "p":
-              return TextAlign.justify;
-          }
-        }
-        return null;
-      },
-//                              customRender: (node, children) {
-//                                print('xxx');
-//                                if (node is dom.Element) {
-//                                  switch (node.localName) {
-//                                    case "p":
-//                                      return Column(children: children);
-//                                  }
-//                                }
-//                                return null;
-//                              },
+    return Container(
+      child: Text('0x${fontColor.toRadixString(16).toUpperCase()}'),
     );
+//    return Html(
+//      data: '$content'.replaceAll('%', ''),
+//      defaultTextStyle: TextStyle(
+////          fontSize: fontSize,
+////          color: fontColor,
+//          locale: Locale('en', 'US'),
+//          fontFamily: 'SourceHanSerifCN',
+//          height: 1.2),
+//      customTextAlign: (dom.Node node) {
+//        if (node is dom.Element) {
+//          switch (node.localName) {
+//            case "p":
+//              return TextAlign.justify;
+//          }
+//        }
+//        return null;
+//      },
+////                              customRender: (node, children) {
+////                                print('xxx');
+////                                if (node is dom.Element) {
+////                                  switch (node.localName) {
+////                                    case "p":
+////                                      return Column(children: children);
+////                                  }
+////                                }
+////                                return null;
+////                              },
+//    );
   }
 }
