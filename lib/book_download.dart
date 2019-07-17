@@ -134,6 +134,10 @@ class _BookDownloadState extends State<BookDownload> {
           child: ListView(
             padding: EdgeInsets.only(left: 20, right: 20),
             children: <Widget>[
+              Text(
+                '图书只支持epub格式',
+                style: TextStyle(height: 1.5, color: Colors.red),
+              ),
               TextField(
                 focusNode: _focusNode,
                 decoration: InputDecoration(labelText: '下载链接'),
