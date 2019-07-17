@@ -139,49 +139,71 @@ class _BookInfoState extends State<BookInfo> {
           color: Color(background),
           child: Column(
             children: <Widget>[
-              DrawerHeader(
+              Container(
+                  padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top,
+                  bottom: 15),
                   child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(10)),
-                    child: coverImage != null
-                        ? Container(
-                            width: ScreenUtil.getInstance().setWidth(90),
-                            child: Image.memory(
-                              image.encodePng(coverImage),
-                              fit: BoxFit.fitWidth,
-                            ),
-                          )
-                        : Container(
-                            width: ScreenUtil.getInstance().setWidth(90),
-                          ),
-                  ),
-                  Expanded(
-                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        '$title',
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        '$author',
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      )
+                      // 解析图片太耗资源
+//                  Container(
+//                    margin: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(10)),
+//                    child: coverImage != null
+//                        ? Container(
+//                            width: ScreenUtil.getInstance().setWidth(90),
+//                            child: Image.memory(
+//                              image.encodePng(coverImage),
+//                              fit: BoxFit.fitWidth,
+//                            ),
+//                          )
+//                        : Container(
+//                            width: ScreenUtil.getInstance().setWidth(90),
+//                          ),
+//                  ),
+                      Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                width: width * 0.8,
+                                padding: EdgeInsets.only(
+                                    right: 10,
+                                    left: 10
+                                ),
+                                child: Text(
+                                  '$title',
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: ScreenUtil.getInstance().setWidth(30)
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: width * 0.8,
+                                padding: EdgeInsets.only(
+                                  right: 10,
+                                  left: 10
+                                ),
+                                child: Text(
+                                  '$author',
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.right,
+                                )
+                                ,
+                              )                            ],
+                          ))
                     ],
-                  ))
-                ],
-              )),
+                  )),
               Expanded(
                   key: _catalogKey,
                   flex: 1,
                   child: ListView(
                     controller: _catalogController,
-                    padding: EdgeInsets.only(top: 0, left: 6, right: 6, bottom: 0),
+                    padding: EdgeInsets.only(top: 0, left: 10, right: 10, bottom: 0),
                     children: chapters.map<Widget>((item) {
                       return InkWell(
                         onTap: () {
@@ -237,15 +259,15 @@ class _BookInfoState extends State<BookInfo> {
                                   locale: Locale('en', 'US'),
                                   fontFamily: 'SourceHanSerifCN',
                                   height: 1.2),
-                              customTextAlign: (dom.Node node) {
-                                if (node is dom.Element) {
-                                  switch (node.localName) {
-                                    case "p":
-                                      return TextAlign.justify;
-                                  }
-                                }
-                                return null;
-                              },
+//                              customTextAlign: (dom.Node node) {
+//                                if (node is dom.Element) {
+//                                  switch (node.localName) {
+//                                    case "p":
+//                                      return TextAlign.justify;
+//                                  }
+//                                }
+//                                return null;
+//                              },
 //                              customRender: (node, children) {
 //                                print('xxx');
 //                                if (node is dom.Element) {
@@ -688,7 +710,115 @@ class _BookInfoState extends State<BookInfo> {
                               ],
                             ),
                           ),
-                        ))
+                        )),
+//                    Positioned(
+//                      left: 0,
+//                      top: 0,
+//                      width: width,
+//                      height: height,
+//                      child: Offstage(
+//                        offstage: !(menuIndex == 0),
+//                        child: GestureDetector(
+//                          onTap: () {
+//                            setState(() {
+//                              menuIndex = -1;
+//                            });
+//                          },
+//                          child: Container(decoration: BoxDecoration(color: Color(0x33000000))),
+//                        ),
+//                      ),
+//                    ),
+//                    Positioned(
+//                        left: 0,
+//                        top: 0,
+//                        height: height - MediaQuery.of(context).padding.top,
+//                        child: Offstage(
+//                          offstage: !(menuIndex == 0),
+//                          child: ConstrainedBox(
+//                            constraints:
+//                                BoxConstraints(maxWidth: width * 0.8, minWidth: width * 0.8),
+//                            child: Container(
+//                              color: Color(background),
+//                              child: Column(
+//                                children: <Widget>[
+//                                  Container(
+//                                      height: ScreenUtil.getInstance().setHeight(120),
+//                                      child: Row(
+//                                        mainAxisAlignment: MainAxisAlignment.start,
+//                                        crossAxisAlignment: CrossAxisAlignment.start,
+//                                        children: <Widget>[
+////                                          Container(
+////                                            margin: EdgeInsets.only(
+////                                                right: ScreenUtil.getInstance().setWidth(10)),
+////                                            child: coverImage != null
+////                                                ? Container(
+////                                                    width: ScreenUtil.getInstance().setWidth(90),
+////                                                    child: Image.memory(
+////                                                      image.encodePng(coverImage),
+////                                                      fit: BoxFit.fitWidth,
+////                                                    ),
+////                                                  )
+////                                                : Container(
+////                                                    width: ScreenUtil.getInstance().setWidth(90),
+////                                                  ),
+////                                          ),
+//                                          Expanded(
+//                                              flex: 1,
+//                                              child: Column(
+//                                                crossAxisAlignment: CrossAxisAlignment.start,
+//                                                children: <Widget>[
+//                                                  Text(
+//                                                    '$title',
+//                                                    maxLines: 3,
+//                                                    overflow: TextOverflow.ellipsis,
+//                                                  ),
+//                                                  Text(
+//                                                    '$author',
+//                                                    maxLines: 3,
+//                                                    overflow: TextOverflow.ellipsis,
+//                                                  )
+//                                                ],
+//                                              ))
+//                                        ],
+//                                      )),
+//                                  Expanded(
+//                                      key: _catalogKey,
+//                                      flex: 1,
+//                                      child: ListView(
+//                                        controller: _catalogController,
+//                                        padding:
+//                                            EdgeInsets.only(top: 0, left: 6, right: 6, bottom: 0),
+//                                        children: chapters.map<Widget>((item) {
+//                                          return InkWell(
+//                                            onTap: () {
+//                                              _readIndex(chapters.indexOf(item), flag: true);
+//                                              _saveBookIndexShared(chapters.indexOf(item));
+//                                              setState(() {
+//                                                showMenu = true;
+//                                              });
+//                                            },
+//                                            child: Container(
+//                                              height: 40,
+//                                              child: Text(
+//                                                '${item.Title}',
+//                                                maxLines: 1,
+//                                                overflow: TextOverflow.ellipsis,
+//                                                style: TextStyle(
+//                                                  fontSize: 20,
+//                                                  color: Color(bookIndex == chapters.indexOf(item)
+//                                                      ? 0xff4285F4
+//                                                      : 0xff333333),
+//                                                ),
+//                                              ),
+//                                            ),
+//                                          );
+//                                        }).toList(),
+//                                      ))
+//                                ],
+//                              ),
+//                            ),
+//                          ),
+//                        ))
                   ],
                 )
               : Container(
