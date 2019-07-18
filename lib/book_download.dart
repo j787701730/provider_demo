@@ -157,7 +157,7 @@ class _BookDownloadState extends State<BookDownload> {
                 },
               ),
               Text(
-                '下载链接和图书名字都有填',
+                '下载链接和图书名字都要填',
                 style: TextStyle(height: 1.5, color: Colors.orange),
               ),
               RaisedButton(

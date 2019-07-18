@@ -372,7 +372,7 @@ class _HomeState extends State<Home> {
                             new MaterialPageRoute(builder: (context) => new WeRead()),
                           );
                         },
-                        child: Text('微信读书')),
+                        child: Text('读书')),
                   ),
                 ),
                 Container(
